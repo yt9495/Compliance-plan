@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compliance Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --bg: #f8f9fc;
+      --surface: #ffffff;
+      --border: #e8eaf0;
+      --text-primary: #0f1523;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --blue-mid: #bfdbfe;
+      --green: #10b981;
+      --green-light: #ecfdf5;
+      --orange: #f59e0b;
+      --orange-light: #fffbeb;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --gray: #6b7280;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed; top: 0; left: 0;
+      width: 240px; height: 100vh;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      z-index: 100;
+      padding: 28px 0;
+    }
+    .sidebar-logo {
+      padding: 0 24px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .sidebar-logo span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .sidebar-nav { padding: 20px 12px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px; font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      margin-bottom: 2px;
+      border: none; background: none; width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: var(--bg); color: var(--text-primary); }
+    .nav-item.active { background: var(--blue-light); color: var(--blue); }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── MAIN ── */
+    .main { margin-left: 240px; min-height: 100vh; }
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-title { font-size: 16px; font-weight: 600; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; border: none;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn svg { width: 16px; height: 16px; }
+
+    .content { padding: 32px; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── DASHBOARD ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .stat-label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 600; color: var(--text-primary); }
+    .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px; margin-bottom: 24px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-title { font-size: 14px; font-weight: 600; }
+
+    /* Progress bar */
+    .progress-wrap { margin-bottom: 16px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .progress-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 99px; background: var(--blue); transition: width 0.4s; }
+    .progress-fill.green { background: var(--green); }
+    .progress-fill.orange { background: var(--orange); }
+    .progress-fill.red { background: var(--red); }
+
+    /* Month navigator */
+    .month-nav {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .month-nav button {
+      width: 28px; height: 28px; border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+    }
+    .month-nav button:hover { background: var(--bg); }
+    .month-nav span { font-size: 14px; font-weight: 600; min-width: 110px; text-align: center; }
+
+    /* Annual calendar */
+    .annual-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+    }
+    .month-cell {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 8px;
+      cursor: pointer; transition: all 0.15s;
+      text-align: center;
+    }
+    .month-cell:hover { border-color: var(--blue); background: var(--blue-light); }
+    .month-cell.has-items { border-color: var(--blue-mid); }
+    .month-cell.current-month { border-color: var(--blue); background: var(--blue-light); }
+    .month-cell-name { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+    .month-cell-count {
+      font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 4px 0;
+    }
+    .month-cell-badges { display: flex; justify-content: center; gap: 3px; flex-wrap: wrap; }
+    .mini-badge {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+
+    /* Urgent items */
+    .urgent-list { display: flex; flex-direction: column; gap: 10px; }
+    .urgent-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .dday-badge {
+      font-size: 11px; font-weight: 700;
+      padding: 3px 8px; border-radius: 99px;
+      min-width: 48px; text-align: center; flex-shrink: 0;
+    }
+    .dday-red { background: var(--red-light); color: var(--red); }
+    .dday-orange { background: var(--orange-light); color: var(--orange); }
+    .dday-blue { background: var(--blue-light); color: var(--blue); }
+    .urgent-info { flex: 1; min-width: 0; }
+    .urgent-title { font-size: 13px; font-weight: 500; }
+    .urgent-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── LIST PAGE ── */
+    .filters {
+      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 99px;
+      font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--white); cursor: pointer;
+      color: var(--text-secondary); transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .items-grid { display: flex; flex-direction: column; gap: 10px; }
+    .item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.15s;
+    }
+    .item-card:hover { box-shadow: var(--shadow-md); }
+    .item-card.urgent { border-left: 3px solid var(--red); }
+    .item-card.warning { border-left: 3px solid var(--orange); }
+    .item-card.completed { opacity: 0.65; }
+
+    .cat-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 6px;
+      flex-shrink: 0; letter-spacing: 0.04em;
+    }
+    .cat-tax { background: #ede9fe; color: #7c3aed; }
+    .cat-fire { background: #fee2e2; color: #dc2626; }
+    .cat-business { background: #dcfce7; color: #16a34a; }
+    .cat-other { background: #f3f4f6; color: #6b7280; }
+
+    .item-info { flex: 1; min-width: 0; }
+    .item-title { font-size: 15px; font-weight: 500; }
+    .item-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; gap: 12px; }
+
+    .item-date { font-size: 13px; font-weight: 500; color: var(--text-secondary); min-width: 100px; text-align: right; }
+    .item-actions { display: flex; gap: 8px; }
+
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-pending { background: var(--text-muted); }
+    .dot-in_progress { background: var(--blue); }
+    .dot-completed { background: var(--green); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none; align-items: center; justify-content: center;
+      z-index: 200; backdrop-filter: blur(2px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+    }
+    .modal-close:hover { background: var(--bg); }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
+    .form-input, .form-select {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary); background: var(--white);
+      outline: none; transition: border-color 0.15s;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--blue); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .custom-month-input { display: none; margin-top: 8px; }
+    .custom-month-input.show { display: block; }
+
+    /* ── STATUS BADGE ── */
+    .status-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 99px;
+    }
+    .status-pending { background: #f3f4f6; color: #6b7280; }
+    .status-in_progress { background: var(--blue-light); color: var(--blue); }
+    .status-completed { background: var(--green-light); color: var(--green); }
+
+    /* ── NOTIFICATION BANNER ── */
+    .notif-banner {
+      background: var(--orange-light);
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: #92400e;
+    }
+    .notif-banner.hidden { display: none; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state svg { width: 48px; height: 48px; margin: 0 auto 12px; display: block; opacity: 0.3; }
+    .empty-state p { font-size: 15px; }
+
+    /* ── MONTH DETAIL (in dashboard) ── */
+    .month-items-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .month-item-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+    }
+    .month-item-row .item-name { flex: 1; font-weight: 500; }
+    .month-item-row .item-date-sm { color: var(--text-muted); font-size: 12px; }
+
+    .full-card { grid-column: 1 / -1; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Completion checkbox */
+    .check-btn {
+      width: 28px; height: 28px; border-radius: 8px;
+      border: 2px solid var(--border);
+      background: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+    .check-btn:hover { border-color: var(--green); }
+    .check-btn.checked { border-color: var(--green); background: var(--green); }
+    .check-btn svg { width: 14px; height: 14px; color: white; }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .annual-grid { grid-template-columns: repeat(4,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Compliance<br>Plan</h1>
+    <span>Management System</span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" onclick="showPage('list')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+      All Items
+    </button>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <button class="btn btn-primary" onclick="openModal()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Add Item
+    </button>
+  </div>
+
+  <div class="content">
+
+    <!-- NOTIFICATION BANNER -->
+    <div class="notif-banner hidden" id="notif-banner">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <span id="notif-text"></span>
+    </div>
+
+    <!-- ── DASHBOARD PAGE ── -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="dashboard-grid">
+        <!-- Urgent Items -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⚠️ Upcoming Deadlines</span>
+          </div>
+          <div class="urgent-list" id="urgent-list">
+            <div class="empty-state"><p>No upcoming deadlines</p></div>
+          </div>
+        </div>
+        <!-- This Month -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">This Month</span>
+          </div>
+          <div id="this-month-progress"></div>
+          <div class="month-items-list" id="this-month-list"></div>
+        </div>
+        <!-- Month Navigator -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Month View</div>
+            <div class="month-nav">
+              <button onclick="changeNavMonth(-1)">&#8592;</button>
+              <span id="nav-month-label"></span>
+              <button onclick="changeNavMonth(1)">&#8594;</button>
+            </div>
+          </div>
+          <div id="nav-month-progress"></div>
+          <div class="month-items-list" id="nav-month-list"></div>
+        </div>
+        <!-- Annual Calendar -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Annual Overview <span id="annual-year"></span></span>
+          </div>
+          <div class="annual-grid" id="annual-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIST PAGE ── -->
+    <div class="page" id="page-list">
+      <div class="filters" id="filters">
+        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('Tax', this)">Tax</button>
+        <button class="filter-btn" onclick="setFilter('Fire Inspection', this)">Fire Inspection</button>
+        <button class="filter-btn" onclick="setFilter('Business Update', this)">Business Update</button>
+        <button class="filter-btn" onclick="setFilter('Other', this)">Other</button>
+        <button class="filter-btn" onclick="setFilter('__pending', this)">Pending</button>
+        <button class="filter-btn" onclick="setFilter('__completed', this)">Completed</button>
+      </div>
+      <div class="items-grid" id="items-grid"></div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Add Compliance Item</span>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <form onsubmit="saveItem(event)">
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input class="form-input" id="f-title" required placeholder="e.g. Annual Tax Filing" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="f-category" required>
+            <option value="">Select...</option>
+            <option>Tax</option>
+            <option>Fire Inspection</option>
+            <option>Business Update</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="f-status">
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Target Date * (MM/DD/YYYY)</label>
+          <input class="form-input" id="f-date" required placeholder="MM/DD/YYYY" maxlength="10" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assignee</label>
+          <input class="form-input" id="f-assignee" placeholder="Name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Repeat Cycle</label>
+        <select class="form-select" id="f-repeat" onchange="toggleCustom()">
+          <option value="none">One-time</option>
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly (3 months)</option>
+          <option value="semi">Every 6 Months</option>
+          <option value="annually">Annually</option>
+          <option value="2y">Every 2 Years</option>
+          <option value="2.5y">Every 2.5 Years</option>
+          <option value="5y">Every 5 Years</option>
+          <option value="custom">Custom</option>
+        </select>
+        <div class="custom-month-input" id="custom-month-wrap">
+          <input class="form-input" id="f-custom-months" type="number" min="1" placeholder="Enter number of months (e.g. 30 = 2.5 years)" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <input class="form-input" id="f-notes" placeholder="Optional notes" />
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="save-btn">Save Item</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── FIREBASE CONFIG ── Replace with your config ──
+const firebaseConfig = {
+  apiKey: "AIzaSyBX1NPea4zhj5cHScxeahIX3o3xMSm_s84",
+  authDomain: "jnfam-compliance.firebaseapp.com",
+  projectId: "jnfam-compliance",
+  storageBucket: "jnfam-compliance.firebasestorage.app",
+  messagingSenderId: "688895979703",
+  appId: "1:688895979703:web:be24576bf73139ecbc9d32",
+  measurementId: "G-HK6Z58NT35"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const colRef = collection(db, "compliance_items");
+
+// ── STATE ──
+let items = [];
+let editingId = null;
+let currentFilter = 'all';
+let navYear = new Date().getFullYear();
+let navMonth = new Date().getMonth(); // 0-indexed
+
+// ── HELPERS ──
+function parseDate(str) {
+  if (!str) return null;
+  const [m, d, y] = str.split('/');
+  if (!m || !d || !y) return null;
+  return new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+}
+function formatDate(d) {
+  if (!d) return '';
+  const mm = String(d.getMonth() + 1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return `${mm}/${dd}/${yyyy}`;
+}
+function daysUntil(dateStr) {
+  const t = parseDate(dateStr);
+  if (!t) return null;
+  const now = new Date(); now.setHours(0,0,0,0);
+  return Math.ceil((t - now) / 86400000);
+}
+function cycleMonths(repeat, customMonths) {
+  const map = { monthly:1, quarterly:3, semi:6, annually:12, '2y':24, '2.5y':30, '5y':60 };
+  if (repeat === 'custom') return parseInt(customMonths) || 0;
+  return map[repeat] || 0;
+}
+function addMonths(dateStr, months) {
+  const d = parseDate(dateStr);
+  if (!d) return '';
+  d.setMonth(d.getMonth() + months);
+  return formatDate(d);
+}
+function getCatClass(cat) {
+  const map = { 'Tax':'cat-tax', 'Fire Inspection':'cat-fire', 'Business Update':'cat-business', 'Other':'cat-other' };
+  return map[cat] || 'cat-other';
+}
+function getMonthName(m) {
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m];
+}
+
+// ── DATE INPUT FORMATTING ──
+window.formatDateInput = function(input) {
+  let v = input.value.replace(/\D/g,'');
+  if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+  if (v.length >= 6) v = v.slice(0,5)+'/'+v.slice(5);
+  input.value = v.slice(0,10);
+}
+
+// ── FIRESTORE REALTIME ──
+onSnapshot(colRef, (snap) => {
+  items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  render();
+});
+
+// ── SAVE ITEM ──
+window.saveItem = async function(e) {
+  e.preventDefault();
+  const title    = document.getElementById('f-title').value.trim();
+  const category = document.getElementById('f-category').value;
+  const status   = document.getElementById('f-status').value;
+  const dateRaw  = document.getElementById('f-date').value.trim();
+  const assignee = document.getElementById('f-assignee').value.trim();
+  const repeat   = document.getElementById('f-repeat').value;
+  const customM  = document.getElementById('f-custom-months').value;
+  const notes    = document.getElementById('f-notes').value.trim();
+
+  // Validate date format
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateRaw)) {
+    alert('Please enter date in MM/DD/YYYY format');
+    return;
+  }
+  const parsed = parseDate(dateRaw);
+  if (!parsed || isNaN(parsed.getTime())) {
+    alert('Invalid date. Please check MM/DD/YYYY');
+    return;
+  }
+
+  const data = { title, category, status, targetDate: dateRaw, assignee, repeat, customMonths: customM, notes, notified30: false, completedAt: null };
+  if (status === 'completed') data.completedAt = new Date().toISOString();
+
+  if (editingId) {
+    await updateDoc(doc(db, 'compliance_items', editingId), data);
+  } else {
+    await addDoc(colRef, data);
+  }
+  closeModal();
+};
+
+// ── COMPLETE ITEM ──
+window.toggleComplete = async function(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  if (item.status === 'completed') {
+    await updateDoc(doc(db, 'compliance_items', id), { status: 'pending', completedAt: null });
+    return;
+  }
+  // Check if within 30 days before or after target
+  const d = daysUntil(item.targetDate);
+  const updates = { status: 'completed', completedAt: new Date().toISOString() };
+  // If repeat, create next item
+  const months = cycleMonths(item.repeat, item.customMonths);
+  if (months > 0 && item.repeat !== 'none') {
+    const nextDate = addMonths(item.targetDate, months);
+    await addDoc(colRef, { ...item, id: undefined, targetDate: nextDate, status: 'pending', completedAt: null, notified30: false });
+  }
+  await updateDoc(doc(db, 'compliance_items', id), updates);
+};
+
+// ── DELETE ──
+window.deleteItem = async function(id) {
+  if (!confirm('Delete this item?')) return;
+  await deleteDoc(doc(db, 'compliance_items', id));
+};
+
+// ── EDIT ──
+window.editItem = function(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  editingId = id;
+  document.getElementById('modal-title').textContent = 'Edit Item';
+  document.getElementById('f-title').value = item.title || '';
+  document.getElementById('f-category').value = item.category || '';
+  document.getElementById('f-status').value = item.status || 'pending';
+  document.getElementById('f-date').value = item.targetDate || '';
+  document.getElementById('f-assignee').value = item.assignee || '';
+  document.getElementById('f-repeat').value = item.repeat || 'none';
+  document.getElementById('f-custom-months').value = item.customMonths || '';
+  document.getElementById('f-notes').value = item.notes || '';
+  toggleCustom();
+  document.getElementById('modal-overlay').classList.add('open');
+};
+
+// ── MODAL ──
+window.openModal = function() {
+  editingId = null;
+  document.getElementById('modal-title').textContent = 'Add Compliance Item';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-category').value = '';
+  document.getElementById('f-status').value = 'pending';
+  document.getElementById('f-date').value = '';
+  document.getElementById('f-assignee').value = '';
+  document.getElementById('f-repeat').value = 'none';
+  document.getElementById('f-custom-months').value = '';
+  document.getElementById('f-notes').value = '';
+  toggleCustom();
+  document.getElementById('modal-overlay').classList.add('open');
+};
+window.closeModal = function() { document.getElementById('modal-overlay').classList.remove('open'); };
+window.closeModalOutside = function(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); };
+window.toggleCustom = function() {
+  const v = document.getElementById('f-repeat').value;
+  document.getElementById('custom-month-wrap').classList.toggle('show', v === 'custom');
+};
+
+// ── NAV MONTH ──
+window.changeNavMonth = function(delta) {
+  navMonth += delta;
+  if (navMonth > 11) { navMonth = 0; navYear++; }
+  if (navMonth < 0) { navMonth = 11; navYear--; }
+  renderNavMonth();
+};
+
+// ── FILTER ──
+window.setFilter = function(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+};
+
+// ── PAGE NAV ──
+window.showPage = function(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('topbar-title').textContent = p === 'dashboard' ? 'Dashboard' : 'All Items';
+};
+
+// ── RENDER ──
+function render() {
+  renderStats();
+  renderUrgent();
+  renderThisMonth();
+  renderNavMonth();
+  renderAnnual();
+  renderList();
+  renderNotification();
+}
+
+function renderStats() {
+  const total = items.length;
+  const completed = items.filter(i => i.status === 'completed').length;
+  const urgent = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d <= 7 && i.status !== 'completed'; }).length;
+  const warning = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d > 7 && d <= 30 && i.status !== 'completed'; }).length;
+  const pct = total ? Math.round(completed / total * 100) : 0;
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Overall Progress</div>
+      <div class="stat-value">${pct}%</div>
+      <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="stat-sub">${completed} of ${total} completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Items</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-sub">Across all categories</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">🔴 Urgent (≤7 days)</div>
+      <div class="stat-value" style="color:var(--red)">${urgent}</div>
+      <div class="stat-sub">Needs immediate attention</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">🟠 Warning (≤30 days)</div>
+      <div class="stat-value" style="color:var(--orange)">${warning}</div>
+      <div class="stat-sub">Approaching deadline</div>
+    </div>
+  `;
+}
+
+function renderUrgent() {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const upcoming = items
+    .filter(i => i.status !== 'completed')
+    .map(i => ({ ...i, days: daysUntil(i.targetDate) }))
+    .filter(i => i.days !== null && i.days <= 30)
+    .sort((a,b) => a.days - b.days)
+    .slice(0,8);
+
+  const el = document.getElementById('urgent-list');
+  if (!upcoming.length) { el.innerHTML = '<div class="empty-state"><p>No upcoming deadlines within 30 days 🎉</p></div>'; return; }
+  el.innerHTML = upcoming.map(i => {
+    const cls = i.days <= 7 ? 'dday-red' : i.days <= 14 ? 'dday-orange' : 'dday-blue';
+    const label = i.days < 0 ? `OVERDUE` : i.days === 0 ? 'TODAY' : `D-${i.days}`;
+    return `<div class="urgent-item">
+      <span class="dday-badge ${cls}">${label}</span>
+      <div class="urgent-info">
+        <div class="urgent-title">${i.title}</div>
+        <div class="urgent-meta">${i.category} ${i.assignee ? '· ' + i.assignee : ''} · ${i.targetDate}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderThisMonth() {
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth();
+  const monthItems = items.filter(i => {
+    const d = parseDate(i.targetDate);
+    return d && d.getFullYear() === y && d.getMonth() === m;
+  });
+  const done = monthItems.filter(i => i.status === 'completed').length;
+  const pct = monthItems.length ? Math.round(done / monthItems.length * 100) : 0;
+
+  document.getElementById('this-month-progress').innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-label"><span>${getMonthName(m)} ${y}</span><span>${done}/${monthItems.length} · ${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill ${pct===100?'green':pct>=50?'':'orange'}" style="width:${pct}%"></div></div>
+    </div>`;
+
+  const el = document.getElementById('this-month-list');
+  if (!monthItems.length) { el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No items this month</p></div>'; return; }
+  el.innerHTML = monthItems.sort((a,b)=>parseDate(a.targetDate)-parseDate(b.targetDate)).map(i => `
+    <div class="month-item-row">
+      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
+      <span class="item-name">${i.title}</span>
+      <span class="item-date-sm">${i.targetDate}</span>
+      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
+    </div>`).join('');
+}
+
+function renderNavMonth() {
+  document.getElementById('nav-month-label').textContent = `${getMonthName(navMonth)} ${navYear}`;
+  const monthItems = items.filter(i => {
+    const d = parseDate(i.targetDate);
+    return d && d.getFullYear() === navYear && d.getMonth() === navMonth;
+  });
+  const done = monthItems.filter(i => i.status === 'completed').length;
+  const pct = monthItems.length ? Math.round(done / monthItems.length * 100) : 0;
+
+  document.getElementById('nav-month-progress').innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-label"><span>${done}/${monthItems.length} completed</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+
+  const el = document.getElementById('nav-month-list');
+  if (!monthItems.length) { el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No items this month</p></div>'; return; }
+  el.innerHTML = monthItems.sort((a,b)=>parseDate(a.targetDate)-parseDate(b.targetDate)).map(i => `
+    <div class="month-item-row">
+      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
+      <span class="item-name">${i.title}</span>
+      <span class="item-date-sm">${i.targetDate}</span>
+      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
+    </div>`).join('');
+}
+
+function renderAnnual() {
+  const y = new Date().getFullYear();
+  document.getElementById('annual-year').textContent = y;
+  const now = new Date();
+  const grid = document.getElementById('annual-grid');
+  grid.innerHTML = Array.from({length:12},(_,m) => {
+    const monthItems = items.filter(i => {
+      const d = parseDate(i.targetDate);
+      return d && d.getFullYear() === y && d.getMonth() === m;
+    });
+    const done = monthItems.filter(i => i.status === 'completed').length;
+    const urgent = monthItems.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d <= 7 && i.status !== 'completed'; }).length;
+    const isCurrent = m === now.getMonth();
+    return `<div class="month-cell ${monthItems.length?'has-items':''} ${isCurrent?'current-month':''}" onclick="jumpToMonth(${m})">
+      <div class="month-cell-name">${getMonthName(m)}</div>
+      <div class="month-cell-count">${monthItems.length || '-'}</div>
+      <div class="month-cell-badges">
+        ${done ? `<div class="mini-badge" style="background:var(--green)" title="${done} done"></div>` : ''}
+        ${urgent ? `<div class="mini-badge" style="background:var(--red)" title="${urgent} urgent"></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.jumpToMonth = function(m) {
+  navMonth = m; navYear = new Date().getFullYear();
+  renderNavMonth();
+};
+
+function renderNotification() {
+  const urgent = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d >= 0 && d <= 30 && i.status !== 'completed'; });
+  const banner = document.getElementById('notif-banner');
+  if (urgent.length) {
+    banner.classList.remove('hidden');
+    document.getElementById('notif-text').textContent = `⚠️ ${urgent.length} item${urgent.length>1?'s':''} due within 30 days — please review upcoming deadlines.`;
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+function renderList() {
+  let filtered = items;
+  if (currentFilter === '__pending') filtered = items.filter(i => i.status !== 'completed');
+  else if (currentFilter === '__completed') filtered = items.filter(i => i.status === 'completed');
+  else if (currentFilter !== 'all') filtered = items.filter(i => i.category === currentFilter);
+
+  filtered = filtered.sort((a,b) => {
+    const da = parseDate(a.targetDate), db2 = parseDate(b.targetDate);
+    if (!da && !db2) return 0; if (!da) return 1; if (!db2) return -1;
+    return da - db2;
+  });
+
+  const el = document.getElementById('items-grid');
+  if (!filtered.length) { el.innerHTML = '<div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><p>No items found</p></div>'; return; }
+
+  el.innerHTML = filtered.map(i => {
+    const d = daysUntil(i.targetDate);
+    const isUrgent = d !== null && d <= 7 && i.status !== 'completed';
+    const isWarning = d !== null && d > 7 && d <= 30 && i.status !== 'completed';
+    const dLabel = d === null ? '' : d < 0 ? `<span style="color:var(--red);font-weight:600">OVERDUE ${Math.abs(d)}d</span>` : d === 0 ? `<span style="color:var(--red);font-weight:600">TODAY</span>` : `D-${d}`;
+    const repeatLabel = i.repeat && i.repeat !== 'none' ? (i.repeat === 'custom' ? `Every ${i.customMonths}mo` : i.repeat.replace('annually','Annually').replace('monthly','Monthly').replace('quarterly','Quarterly').replace('semi','6-Month').replace('2y','2-Year').replace('2.5y','2.5-Year').replace('5y','5-Year')) : '';
+    const isChecked = i.status === 'completed';
+    return `<div class="item-card ${isUrgent?'urgent':isWarning?'warning':''} ${isChecked?'completed':''}">
+      <button class="check-btn ${isChecked?'checked':''}" onclick="toggleComplete('${i.id}')" title="${isChecked?'Mark incomplete':'Mark complete'}">
+        ${isChecked?'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>':''}
+      </button>
+      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
+      <div class="item-info">
+        <div class="item-title">${i.title}</div>
+        <div class="item-meta">
+          ${i.assignee ? `<span>👤 ${i.assignee}</span>` : ''}
+          ${repeatLabel ? `<span>🔄 ${repeatLabel}</span>` : ''}
+          ${i.notes ? `<span>📝 ${i.notes}</span>` : ''}
+        </div>
+      </div>
+      <div style="text-align:right;min-width:110px">
+        <div class="item-date">${i.targetDate}</div>
+        <div style="font-size:12px;margin-top:2px">${dLabel}</div>
+      </div>
+      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editItem('${i.id}')">Edit</button>
+        <button class="btn btn-ghost btn-sm" onclick="deleteItem('${i.id}')" style="color:var(--red)">Del</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Date input auto-format
+document.getElementById('f-date').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'');
+  if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+  if (v.length >= 6) v = v.slice(0,5)+'/'+v.slice(5);
+  this.value = v.slice(0,10);
+});
+
+// Init nav month
+navMonth = new Date().getMonth();
+navYear = new Date().getFullYear();
+</script>
+</body>
+</html>
