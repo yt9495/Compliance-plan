@@ -488,7 +488,7 @@
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
-    <form onsubmit="saveItem(event)">
+    <div id="modal-form">
       <div class="form-group">
         <label class="form-label">Title *</label>
         <input class="form-input" id="f-title" required placeholder="e.g. Annual Tax Filing" />
@@ -546,9 +546,9 @@
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
         <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="save-btn">Save Item</button>
+        <button type="button" class="btn btn-primary" onclick="saveItem()">Save Item</button>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 
@@ -633,8 +633,7 @@ onSnapshot(colRef, (snap) => {
 });
 
 // ── SAVE ITEM ──
-window.saveItem = async function(e) {
-  e.preventDefault();
+window.saveItem = async function() {
   const title    = document.getElementById('f-title').value.trim();
   const category = document.getElementById('f-category').value;
   const status   = document.getElementById('f-status').value;
@@ -644,9 +643,14 @@ window.saveItem = async function(e) {
   const customM  = document.getElementById('f-custom-months').value;
   const notes    = document.getElementById('f-notes').value.trim();
 
-  // Validate date format
+  // Validate required fields
+  if (!title) { alert('Please enter a title'); return; }
+  if (!category) { alert('Please select a category'); return; }
+  if (!dateRaw) { alert('Please enter a target date'); return; }
+
+  // Validate date format MM/DD/YYYY
   if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateRaw)) {
-    alert('Please enter date in MM/DD/YYYY format');
+    alert('Please enter date in MM/DD/YYYY format (e.g. 01/15/2027)');
     return;
   }
   const parsed = parseDate(dateRaw);
@@ -658,12 +662,16 @@ window.saveItem = async function(e) {
   const data = { title, category, status, targetDate: dateRaw, assignee, repeat, customMonths: customM, notes, notified30: false, completedAt: null };
   if (status === 'completed') data.completedAt = new Date().toISOString();
 
-  if (editingId) {
-    await updateDoc(doc(db, 'compliance_items', editingId), data);
-  } else {
-    await addDoc(colRef, data);
+  try {
+    if (editingId) {
+      await updateDoc(doc(db, 'compliance_items', editingId), data);
+    } else {
+      await addDoc(colRef, data);
+    }
+    closeModal();
+  } catch(err) {
+    alert('Save failed: ' + err.message);
   }
-  closeModal();
 };
 
 // ── COMPLETE ITEM ──
