@@ -664,9 +664,29 @@ window.saveItem = async function() {
 
   try {
     if (editingId) {
+      // 편집 시: 해당 항목만 업데이트
       await updateDoc(doc(db, 'compliance_items', editingId), data);
     } else {
+      // 신규: 첫 항목 저장
       await addDoc(colRef, data);
+
+      // 반복 주기 있으면 10년치 미래 일정 자동 생성
+      const months = cycleMonths(repeat, customM);
+      if (months > 0 && repeat !== 'none') {
+        const maxMonths = 10 * 12;
+        let accumulated = months;
+        while (accumulated <= maxMonths) {
+          const futureDate = addMonths(dateRaw, accumulated);
+          await addDoc(colRef, {
+            title, category, assignee, repeat, customMonths: customM, notes,
+            targetDate: futureDate,
+            status: 'pending',
+            notified30: false,
+            completedAt: null
+          });
+          accumulated += months;
+        }
+      }
     }
     closeModal();
   } catch(err) {
@@ -678,20 +698,38 @@ window.saveItem = async function() {
 window.toggleComplete = async function(id) {
   const item = items.find(i => i.id === id);
   if (!item) return;
+
+  // 완료 → 미완료로 되돌리기
   if (item.status === 'completed') {
     await updateDoc(doc(db, 'compliance_items', id), { status: 'pending', completedAt: null });
     return;
   }
-  // Check if within 30 days before or after target
-  const d = daysUntil(item.targetDate);
+
+  // 완료 처리
   const updates = { status: 'completed', completedAt: new Date().toISOString() };
-  // If repeat, create next item
-  const months = cycleMonths(item.repeat, item.customMonths);
-  if (months > 0 && item.repeat !== 'none') {
-    const nextDate = addMonths(item.targetDate, months);
-    await addDoc(colRef, { ...item, id: undefined, targetDate: nextDate, status: 'pending', completedAt: null, notified30: false });
-  }
   await updateDoc(doc(db, 'compliance_items', id), updates);
+
+  // 반복 주기가 있으면 다음 일정이 없을 때만 생성
+  const months = cycleMonths(item.repeat, item.customMonths);
+  if (months > 0 && item.repeat && item.repeat !== 'none') {
+    const nextDate = addMonths(item.targetDate, months);
+    // 같은 제목 + 같은 날짜 항목이 이미 있는지 확인
+    const exists = items.some(i => i.title === item.title && i.targetDate === nextDate);
+    if (!exists) {
+      await addDoc(colRef, {
+        title: item.title,
+        category: item.category,
+        assignee: item.assignee,
+        repeat: item.repeat,
+        customMonths: item.customMonths,
+        notes: item.notes,
+        targetDate: nextDate,
+        status: 'pending',
+        notified30: false,
+        completedAt: null
+      });
+    }
+  }
 };
 
 // ── DELETE ──
