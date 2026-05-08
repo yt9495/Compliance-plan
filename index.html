@@ -706,28 +706,44 @@ window.toggleComplete = async function(id) {
   }
 
   // 완료 처리
-  const updates = { status: 'completed', completedAt: new Date().toISOString() };
-  await updateDoc(doc(db, 'compliance_items', id), updates);
+  await updateDoc(doc(db, 'compliance_items', id), { status: 'completed', completedAt: new Date().toISOString() });
 
-  // 반복 주기가 있으면 다음 일정이 없을 때만 생성
-  const months = cycleMonths(item.repeat, item.customMonths);
-  if (months > 0 && item.repeat && item.repeat !== 'none') {
+  // 반복 주기 계산 (직접 매핑으로 확실하게)
+  const repeatVal = (item.repeat || '').toLowerCase().trim();
+  const monthMap = { 'monthly':1, 'quarterly':3, 'semi':6, 'annually':12, '2y':24, '2.5y':30, '5y':60 };
+  let months = 0;
+  if (repeatVal === 'custom') {
+    months = parseInt(item.customMonths) || 0;
+  } else {
+    months = monthMap[repeatVal] || 0;
+  }
+
+  console.log('[toggleComplete] repeat:', repeatVal, '| months:', months, '| targetDate:', item.targetDate);
+
+  if (months > 0) {
     const nextDate = addMonths(item.targetDate, months);
-    // 같은 제목 + 같은 날짜 항목이 이미 있는지 확인
-    const exists = items.some(i => i.title === item.title && i.targetDate === nextDate);
+    console.log('[toggleComplete] nextDate:', nextDate);
+    // 같은 제목 + 같은 날짜가 이미 있는지 확인
+    const exists = items.some(i => i.title === item.title && i.targetDate === nextDate && i.id !== id);
+    console.log('[toggleComplete] exists:', exists);
     if (!exists) {
-      await addDoc(colRef, {
-        title: item.title,
-        category: item.category,
-        assignee: item.assignee,
-        repeat: item.repeat,
-        customMonths: item.customMonths,
-        notes: item.notes,
-        targetDate: nextDate,
-        status: 'pending',
-        notified30: false,
-        completedAt: null
-      });
+      try {
+        await addDoc(colRef, {
+          title: item.title,
+          category: item.category || '',
+          assignee: item.assignee || '',
+          repeat: item.repeat || 'none',
+          customMonths: item.customMonths || '',
+          notes: item.notes || '',
+          targetDate: nextDate,
+          status: 'pending',
+          notified30: false,
+          completedAt: null
+        });
+        console.log('[toggleComplete] Next item created:', nextDate);
+      } catch(err) {
+        console.error('[toggleComplete] Failed to create next item:', err);
+      }
     }
   }
 };
