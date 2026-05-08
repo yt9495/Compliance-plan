@@ -553,9 +553,9 @@
 </div>
 
 <!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
 
 // ── FIREBASE CONFIG ── Replace with your config ──
 const firebaseConfig = {
@@ -568,9 +568,9 @@ const firebaseConfig = {
   measurementId: "G-HK6Z58NT35"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const colRef = collection(db, "compliance_items");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const colRef = db.collection("compliance_items");
 
 // ── STATE ──
 let items = [];
@@ -627,7 +627,7 @@ window.formatDateInput = function(input) {
 }
 
 // ── FIRESTORE REALTIME ──
-onSnapshot(colRef, (snap) => {
+colRef.onSnapshot((snap) => {
   items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   render();
 });
@@ -665,10 +665,10 @@ window.saveItem = async function() {
   try {
     if (editingId) {
       // 편집 시: 해당 항목만 업데이트
-      await updateDoc(doc(db, 'compliance_items', editingId), data);
+      await db.collection('compliance_items').doc(editingId).update(data);
     } else {
       // 신규: 첫 항목 저장
-      await addDoc(colRef, data);
+      await colRef.add(data);
 
       // 반복 주기 있으면 10년치 미래 일정 자동 생성
       const months = cycleMonths(repeat, customM);
@@ -677,7 +677,7 @@ window.saveItem = async function() {
         let accumulated = months;
         while (accumulated <= maxMonths) {
           const futureDate = addMonths(dateRaw, accumulated);
-          await addDoc(colRef, {
+          await colRef.add({
             title, category, assignee, repeat, customMonths: customM, notes,
             targetDate: futureDate,
             status: 'pending',
@@ -701,12 +701,12 @@ window.toggleComplete = async function(id) {
 
   // 완료 → 미완료로 되돌리기
   if (item.status === 'completed') {
-    await updateDoc(doc(db, 'compliance_items', id), { status: 'pending', completedAt: null });
+    await db.collection('compliance_items').doc(id).update({ status: 'pending', completedAt: null });
     return;
   }
 
   // 완료 처리
-  await updateDoc(doc(db, 'compliance_items', id), { status: 'completed', completedAt: new Date().toISOString() });
+  await db.collection('compliance_items').doc(id).update({ status: 'completed', completedAt: new Date().toISOString() });
 
   // 반복 주기 계산 (직접 매핑으로 확실하게)
   const repeatVal = (item.repeat || '').toLowerCase().trim();
@@ -728,7 +728,7 @@ window.toggleComplete = async function(id) {
     console.log('[toggleComplete] exists:', exists);
     if (!exists) {
       try {
-        await addDoc(colRef, {
+        await colRef.add({
           title: item.title,
           category: item.category || '',
           assignee: item.assignee || '',
@@ -751,7 +751,7 @@ window.toggleComplete = async function(id) {
 // ── DELETE ──
 window.deleteItem = async function(id) {
   if (!confirm('Delete this item?')) return;
-  await deleteDoc(doc(db, 'compliance_items', id));
+  await db.collection('compliance_items').doc(id).delete();
 };
 
 // ── EDIT ──
