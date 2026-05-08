@@ -697,7 +697,7 @@ window.saveItem = async function() {
 // ── COMPLETE ITEM ──
 window.toggleComplete = async function(id) {
   const item = items.find(i => i.id === id);
-  if (!item) return;
+  if (!item) { alert('Item not found: ' + id); return; }
 
   // 완료 → 미완료로 되돌리기
   if (item.status === 'completed') {
@@ -708,7 +708,7 @@ window.toggleComplete = async function(id) {
   // 완료 처리
   await db.collection('compliance_items').doc(id).update({ status: 'completed', completedAt: new Date().toISOString() });
 
-  // 반복 주기 계산 (직접 매핑으로 확실하게)
+  // 반복 주기 계산
   const repeatVal = (item.repeat || '').toLowerCase().trim();
   const monthMap = { 'monthly':1, 'quarterly':3, 'semi':6, 'annually':12, '2y':24, '2.5y':30, '5y':60 };
   let months = 0;
@@ -718,14 +718,9 @@ window.toggleComplete = async function(id) {
     months = monthMap[repeatVal] || 0;
   }
 
-  console.log('[toggleComplete] repeat:', repeatVal, '| months:', months, '| targetDate:', item.targetDate);
-
   if (months > 0) {
     const nextDate = addMonths(item.targetDate, months);
-    console.log('[toggleComplete] nextDate:', nextDate);
-    // 같은 제목 + 같은 날짜가 이미 있는지 확인
     const exists = items.some(i => i.title === item.title && i.targetDate === nextDate && i.id !== id);
-    console.log('[toggleComplete] exists:', exists);
     if (!exists) {
       try {
         await colRef.add({
@@ -740,9 +735,9 @@ window.toggleComplete = async function(id) {
           notified30: false,
           completedAt: null
         });
-        console.log('[toggleComplete] Next item created:', nextDate);
+        alert('✅ 완료! 다음 일정이 자동 생성되었습니다:\n' + item.title + '\n' + nextDate);
       } catch(err) {
-        console.error('[toggleComplete] Failed to create next item:', err);
+        alert('❌ 다음 일정 생성 실패: ' + err.message);
       }
     }
   }
