@@ -735,9 +735,8 @@ window.toggleComplete = async function(id) {
           notified30: false,
           completedAt: null
         });
-        alert('✅ 완료! 다음 일정이 자동 생성되었습니다:\n' + item.title + '\n' + nextDate);
       } catch(err) {
-        alert('❌ 다음 일정 생성 실패: ' + err.message);
+        console.error('Next item creation failed:', err);
       }
     }
   }
