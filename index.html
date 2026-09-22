@@ -5,405 +5,239 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compliance Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --white: #ffffff;
-      --bg: #f8f9fc;
-      --surface: #ffffff;
-      --border: #e8eaf0;
-      --text-primary: #0f1523;
-      --text-secondary: #6b7280;
-      --text-muted: #9ca3af;
-      --blue: #2563eb;
-      --blue-light: #eff6ff;
-      --blue-mid: #bfdbfe;
-      --green: #10b981;
-      --green-light: #ecfdf5;
-      --orange: #f59e0b;
-      --orange-light: #fffbeb;
-      --red: #ef4444;
-      --red-light: #fef2f2;
-      --gray: #6b7280;
-      --radius: 12px;
-      --radius-sm: 8px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --white:#fff; --bg:#f8f9fc; --surface:#fff; --border:#e8eaf0;
+      --text-primary:#0f1523; --text-secondary:#6b7280; --text-muted:#9ca3af;
+      --blue:#2563eb; --blue-light:#eff6ff; --blue-mid:#bfdbfe;
+      --green:#10b981; --green-light:#ecfdf5;
+      --orange:#f59e0b; --orange-light:#fffbeb;
+      --red:#ef4444; --red-light:#fef2f2;
+      --radius:12px; --radius-sm:8px;
+      --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:0 4px 12px rgba(0,0,0,0.08);
     }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text-primary); min-height:100vh; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      min-height: 100vh;
-    }
+    /* SIDEBAR */
+    .sidebar { position:fixed; top:0; left:0; width:240px; height:100vh; background:var(--white); border-right:1px solid var(--border); display:flex; flex-direction:column; z-index:100; padding:28px 0; }
+    .sidebar-logo { padding:0 24px 28px; border-bottom:1px solid var(--border); }
+    .sidebar-logo h1 { font-family:'DM Serif Display',serif; font-size:18px; line-height:1.2; }
+    .sidebar-logo span { font-size:11px; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; }
+    .sidebar-nav { padding:20px 12px; flex:1; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:var(--radius-sm); cursor:pointer; font-size:14px; font-weight:500; color:var(--text-secondary); transition:all .15s; margin-bottom:2px; border:none; background:none; width:100%; text-align:left; font-family:inherit; }
+    .nav-item:hover { background:var(--bg); color:var(--text-primary); }
+    .nav-item.active { background:var(--blue-light); color:var(--blue); }
+    .nav-item svg { width:18px; height:18px; flex-shrink:0; }
 
-    /* ── SIDEBAR ── */
-    .sidebar {
-      position: fixed; top: 0; left: 0;
-      width: 240px; height: 100vh;
-      background: var(--white);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      z-index: 100;
-      padding: 28px 0;
-    }
-    .sidebar-logo {
-      padding: 0 24px 28px;
-      border-bottom: 1px solid var(--border);
-    }
-    .sidebar-logo h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      color: var(--text-primary);
-      line-height: 1.2;
-    }
-    .sidebar-logo span {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .sidebar-nav { padding: 20px 12px; flex: 1; }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 14px; font-weight: 500;
-      color: var(--text-secondary);
-      transition: all 0.15s;
-      margin-bottom: 2px;
-      border: none; background: none; width: 100%; text-align: left;
-    }
-    .nav-item:hover { background: var(--bg); color: var(--text-primary); }
-    .nav-item.active { background: var(--blue-light); color: var(--blue); }
-    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    /* MAIN */
+    .main { margin-left:240px; min-height:100vh; }
+    .topbar { background:var(--white); border-bottom:1px solid var(--border); padding:0 32px; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; gap:16px; }
+    .topbar-left { display:flex; align-items:center; gap:20px; }
+    .topbar-title { font-size:16px; font-weight:600; }
+    .year-picker { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:3px; }
+    .year-picker button { width:30px; height:30px; border:none; background:transparent; border-radius:7px; cursor:pointer; color:var(--text-secondary); font-size:15px; }
+    .year-picker button:hover { background:var(--white); color:var(--text-primary); }
+    .year-picker select { border:none; background:var(--white); border-radius:7px; padding:6px 10px; font-family:inherit; font-size:15px; font-weight:700; color:var(--text-primary); cursor:pointer; outline:none; box-shadow:var(--shadow); }
+    .year-today { font-size:12px; color:var(--blue); background:none; border:none; cursor:pointer; font-family:inherit; font-weight:500; }
 
-    /* ── MAIN ── */
-    .main { margin-left: 240px; min-height: 100vh; }
-    .topbar {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 50;
-    }
-    .topbar-title { font-size: 16px; font-weight: 600; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 18px;
-      border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 500;
-      cursor: pointer; border: none;
-      transition: all 0.15s;
-    }
-    .btn-primary { background: var(--blue); color: white; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
-    .btn-ghost:hover { background: var(--bg); }
-    .btn-sm { padding: 6px 12px; font-size: 13px; }
-    .btn svg { width: 16px; height: 16px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:var(--radius-sm); font-size:14px; font-weight:500; cursor:pointer; border:none; transition:all .15s; font-family:inherit; }
+    .btn-primary { background:var(--blue); color:#fff; }
+    .btn-primary:hover { background:#1d4ed8; }
+    .btn-ghost { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
+    .btn-ghost:hover { background:var(--bg); }
+    .btn-sm { padding:6px 12px; font-size:13px; }
+    .btn svg { width:16px; height:16px; }
+    .content { padding:28px 32px; }
+    .page { display:none; }
+    .page.active { display:block; }
 
-    .content { padding: 32px; }
+    /* STATS */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px; }
+    .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); }
+    .stat-card.clickable { cursor:pointer; transition:box-shadow .15s; }
+    .stat-card.clickable:hover { box-shadow:var(--shadow-md); }
+    .stat-label { font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+    .stat-value { font-size:28px; font-weight:700; }
+    .stat-sub { font-size:12px; color:var(--text-muted); margin-top:4px; }
 
-    /* ── PAGES ── */
-    .page { display: none; }
-    .page.active { display: block; }
+    .dashboard-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; box-shadow:var(--shadow); min-width:0; }
+    .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:10px; }
+    .card-title { font-size:14px; font-weight:600; }
+    .card-hint { font-size:12px; color:var(--text-muted); font-weight:400; }
 
-    /* ── DASHBOARD ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px; margin-bottom: 24px;
-    }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-    .stat-label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-    .stat-value { font-size: 28px; font-weight: 600; color: var(--text-primary); }
-    .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .progress-wrap { margin-bottom:14px; }
+    .progress-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
+    .progress-bar { height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:99px; background:var(--blue); transition:width .4s; }
+    .progress-fill.green { background:var(--green); }
+    .progress-fill.orange { background:var(--orange); }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px; margin-bottom: 24px;
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-    .card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .card-title { font-size: 14px; font-weight: 600; }
+    .month-nav { display:flex; align-items:center; gap:10px; }
+    .month-nav button { width:28px; height:28px; border-radius:6px; border:1px solid var(--border); background:var(--white); cursor:pointer; color:var(--text-secondary); }
+    .month-nav button:hover { background:var(--bg); }
+    .month-nav span { font-size:14px; font-weight:600; min-width:90px; text-align:center; }
 
-    /* Progress bar */
-    .progress-wrap { margin-bottom: 16px; }
-    .progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-    .progress-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 99px; background: var(--blue); transition: width 0.4s; }
-    .progress-fill.green { background: var(--green); }
-    .progress-fill.orange { background: var(--orange); }
-    .progress-fill.red { background: var(--red); }
+    /* ANNUAL */
+    .annual-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+    .month-cell { border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 8px 9px; cursor:pointer; transition:all .15s; text-align:center; position:relative; }
+    .month-cell:hover { border-color:var(--blue); }
+    .month-cell.current-month { border-color:var(--blue); border-width:2px; padding:9px 7px 8px; }
+    .month-cell.selected { background:var(--blue-light); border-color:var(--blue); }
+    .month-cell.empty { opacity:.55; }
+    .month-cell-name { font-size:12px; font-weight:600; color:var(--text-secondary); }
+    .month-cell-count { font-size:16px; font-weight:700; margin:4px 0 6px; }
+    .month-cell-count small { font-size:12px; color:var(--text-muted); font-weight:500; }
+    .mini-bar { height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+    .mini-bar > div { height:100%; background:var(--green); }
+    .od-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--red); }
 
-    /* Month navigator */
-    .month-nav {
-      display: flex; align-items: center; gap: 12px;
-    }
-    .month-nav button {
-      width: 28px; height: 28px; border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--white); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-secondary);
-    }
-    .month-nav button:hover { background: var(--bg); }
-    .month-nav span { font-size: 14px; font-weight: 600; min-width: 110px; text-align: center; }
+    /* LISTS */
+    .urgent-list { display:flex; flex-direction:column; gap:8px; max-height:360px; overflow-y:auto; }
+    .row { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px; }
+    .row .grow { flex:1; min-width:0; }
+    .row .t { font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .row .m { font-size:11px; color:var(--text-muted); margin-top:2px; }
+    .row .d { color:var(--text-muted); font-size:12px; white-space:nowrap; }
+    .month-items-list { display:flex; flex-direction:column; gap:8px; max-height:360px; overflow-y:auto; }
+    .dday-badge { font-size:11px; font-weight:700; padding:3px 8px; border-radius:99px; min-width:62px; text-align:center; flex-shrink:0; }
+    .dday-red { background:var(--red-light); color:var(--red); }
+    .dday-orange { background:var(--orange-light); color:#b45309; }
+    .dday-blue { background:var(--blue-light); color:var(--blue); }
 
-    /* Annual calendar */
-    .annual-grid {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
-    }
-    .month-cell {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 8px;
-      cursor: pointer; transition: all 0.15s;
-      text-align: center;
-    }
-    .month-cell:hover { border-color: var(--blue); background: var(--blue-light); }
-    .month-cell.has-items { border-color: var(--blue-mid); }
-    .month-cell.current-month { border-color: var(--blue); background: var(--blue-light); }
-    .month-cell-name { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-    .month-cell-count {
-      font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 4px 0;
-    }
-    .month-cell-badges { display: flex; justify-content: center; gap: 3px; flex-wrap: wrap; }
-    .mini-badge {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
+    .breakdown { display:flex; flex-direction:column; gap:12px; }
+    .bd-row .progress-label span:first-child { font-weight:500; }
+    .bd-sub { font-size:12px; color:var(--text-muted); }
+    .section-sep { border-top:1px solid var(--border); margin:18px 0 14px; }
+    .assignee-chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .a-chip { font-size:12px; padding:5px 10px; border-radius:99px; background:var(--bg); border:1px solid var(--border); }
+    .a-chip b { color:var(--blue); }
+    .a-chip.warn { border-color:#fecaca; background:var(--red-light); }
 
-    /* Urgent items */
-    .urgent-list { display: flex; flex-direction: column; gap: 10px; }
-    .urgent-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-    }
-    .dday-badge {
-      font-size: 11px; font-weight: 700;
-      padding: 3px 8px; border-radius: 99px;
-      min-width: 48px; text-align: center; flex-shrink: 0;
-    }
-    .dday-red { background: var(--red-light); color: var(--red); }
-    .dday-orange { background: var(--orange-light); color: var(--orange); }
-    .dday-blue { background: var(--blue-light); color: var(--blue); }
-    .urgent-info { flex: 1; min-width: 0; }
-    .urgent-title { font-size: 13px; font-weight: 500; }
-    .urgent-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    /* LIST PAGE */
+    .filters { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center; }
+    .filter-btn { padding:6px 14px; border-radius:99px; font-size:13px; font-weight:500; border:1px solid var(--border); background:var(--white); cursor:pointer; color:var(--text-secondary); transition:all .15s; font-family:inherit; }
+    .filter-btn:hover { border-color:var(--blue); color:var(--blue); }
+    .filter-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .filter-sep { width:1px; height:22px; background:var(--border); margin:0 4px; }
+    .search-input { padding:7px 12px; border:1px solid var(--border); border-radius:99px; font-family:inherit; font-size:13px; outline:none; min-width:200px; }
+    .search-input:focus { border-color:var(--blue); }
+    .list-summary { font-size:13px; color:var(--text-muted); margin-bottom:12px; }
+    .items-grid { display:flex; flex-direction:column; gap:10px; }
+    .month-group-title { font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin:10px 0 2px; }
+    .item-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow); transition:box-shadow .15s; }
+    .item-card:hover { box-shadow:var(--shadow-md); }
+    .item-card.urgent { border-left:3px solid var(--red); }
+    .item-card.warning { border-left:3px solid var(--orange); }
+    .item-card.completed { opacity:.65; }
+    .cat-badge { font-size:11px; font-weight:600; padding:4px 10px; border-radius:6px; flex-shrink:0; letter-spacing:.04em; }
+    .cat-tax { background:#ede9fe; color:#7c3aed; }
+    .cat-fire { background:#fee2e2; color:#dc2626; }
+    .cat-business { background:#dcfce7; color:#16a34a; }
+    .cat-other { background:#f3f4f6; color:#6b7280; }
+    .item-info { flex:1; min-width:0; }
+    .item-title { font-size:15px; font-weight:500; }
+    .item-meta { font-size:12px; color:var(--text-muted); margin-top:3px; display:flex; gap:12px; flex-wrap:wrap; }
+    .item-date { font-size:13px; font-weight:500; color:var(--text-secondary); }
+    .item-actions { display:flex; gap:8px; }
+    .status-badge { font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+    .status-pending { background:#f3f4f6; color:#6b7280; }
+    .status-in_progress { background:var(--blue-light); color:var(--blue); }
+    .status-completed { background:var(--green-light); color:var(--green); }
 
-    /* ── LIST PAGE ── */
-    .filters {
-      display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .filter-btn {
-      padding: 6px 14px; border-radius: 99px;
-      font-size: 13px; font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--white); cursor: pointer;
-      color: var(--text-secondary); transition: all 0.15s;
-    }
-    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
-    .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; z-index:200; backdrop-filter:blur(2px); }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--white); border-radius:var(--radius); width:100%; max-width:540px; max-height:90vh; overflow-y:auto; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,.15); }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+    .modal-title { font-size:18px; font-weight:600; }
+    .modal-close { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-muted); }
+    .form-group { margin-bottom:16px; }
+    .form-label { display:block; font-size:13px; font-weight:500; margin-bottom:6px; color:var(--text-secondary); }
+    .form-input, .form-select { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px; font-family:inherit; color:var(--text-primary); background:var(--white); outline:none; transition:border-color .15s; }
+    .form-input:focus, .form-select:focus { border-color:var(--blue); }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-help { font-size:12px; color:var(--text-muted); margin-top:5px; line-height:1.45; }
+    .custom-month-input { display:none; margin-top:8px; }
+    .custom-month-input.show { display:block; }
+    .check-line { display:flex; gap:8px; align-items:flex-start; font-size:13px; color:var(--text-secondary); cursor:pointer; }
+    .check-line input { margin-top:3px; }
 
-    .items-grid { display: flex; flex-direction: column; gap: 10px; }
-    .item-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      display: flex; align-items: center; gap: 16px;
-      box-shadow: var(--shadow);
-      transition: box-shadow 0.15s;
-    }
-    .item-card:hover { box-shadow: var(--shadow-md); }
-    .item-card.urgent { border-left: 3px solid var(--red); }
-    .item-card.warning { border-left: 3px solid var(--orange); }
-    .item-card.completed { opacity: 0.65; }
+    .notif-banner { background:var(--orange-light); border:1px solid #fde68a; border-radius:var(--radius); padding:12px 16px; margin-bottom:20px; display:flex; align-items:center; gap:10px; font-size:13px; color:#92400e; }
+    .notif-banner.red { background:var(--red-light); border-color:#fecaca; color:#991b1b; }
+    .notif-banner.hidden { display:none; }
+    .empty-state { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:14px; }
 
-    .cat-badge {
-      font-size: 11px; font-weight: 600;
-      padding: 4px 10px; border-radius: 6px;
-      flex-shrink: 0; letter-spacing: 0.04em;
-    }
-    .cat-tax { background: #ede9fe; color: #7c3aed; }
-    .cat-fire { background: #fee2e2; color: #dc2626; }
-    .cat-business { background: #dcfce7; color: #16a34a; }
-    .cat-other { background: #f3f4f6; color: #6b7280; }
+    .check-btn { width:26px; height:26px; border-radius:7px; border:2px solid var(--border); background:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; flex-shrink:0; }
+    .check-btn:hover { border-color:var(--green); }
+    .check-btn.checked { border-color:var(--green); background:var(--green); }
+    .check-btn svg { width:13px; height:13px; color:#fff; }
 
-    .item-info { flex: 1; min-width: 0; }
-    .item-title { font-size: 15px; font-weight: 500; }
-    .item-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; gap: 12px; }
+    /* SETTINGS */
+    .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .toggle { position:relative; width:42px; height:24px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .toggle span { position:absolute; inset:0; background:#d1d5db; border-radius:99px; cursor:pointer; transition:.2s; }
+    .toggle span::before { content:''; position:absolute; width:18px; height:18px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s; }
+    .toggle input:checked + span { background:var(--green); }
+    .toggle input:checked + span::before { transform:translateX(18px); }
+    .setting-line { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:4px 0 16px; }
+    .dir-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .dir-table th { text-align:left; font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; padding:6px 8px; border-bottom:1px solid var(--border); }
+    .dir-table td { padding:8px; border-bottom:1px solid var(--border); }
+    .dir-add { display:grid; grid-template-columns:1fr 1.4fr auto; gap:8px; margin-top:12px; }
+    .status-box { font-size:13px; line-height:1.6; padding:12px 14px; border-radius:var(--radius-sm); background:var(--bg); border:1px solid var(--border); }
+    .status-box.ok { background:var(--green-light); border-color:#a7f3d0; }
+    .status-box.bad { background:var(--orange-light); border-color:#fde68a; }
+    .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#111827; color:#fff; padding:10px 18px; border-radius:10px; font-size:13px; z-index:300; opacity:0; transition:opacity .2s; pointer-events:none; }
+    .toast.show { opacity:1; }
 
-    .item-date { font-size: 13px; font-weight: 500; color: var(--text-secondary); min-width: 100px; text-align: right; }
-    .item-actions { display: flex; gap: 8px; }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
-    .status-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-    .dot-pending { background: var(--text-muted); }
-    .dot-in_progress { background: var(--blue); }
-    .dot-completed { background: var(--green); }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.35);
-      display: none; align-items: center; justify-content: center;
-      z-index: 200; backdrop-filter: blur(2px);
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--white);
-      border-radius: var(--radius);
-      width: 100%; max-width: 520px;
-      max-height: 90vh; overflow-y: auto;
-      padding: 28px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-    .modal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 24px;
-    }
-    .modal-title { font-size: 18px; font-weight: 600; }
-    .modal-close {
-      width: 32px; height: 32px; border-radius: 8px;
-      border: 1px solid var(--border); background: transparent;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      color: var(--text-muted);
-    }
-    .modal-close:hover { background: var(--bg); }
-
-    .form-group { margin-bottom: 18px; }
-    .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
-    .form-input, .form-select {
-      width: 100%; padding: 10px 12px;
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      font-size: 14px; font-family: 'DM Sans', sans-serif;
-      color: var(--text-primary); background: var(--white);
-      outline: none; transition: border-color 0.15s;
-    }
-    .form-input:focus, .form-select:focus { border-color: var(--blue); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .custom-month-input { display: none; margin-top: 8px; }
-    .custom-month-input.show { display: block; }
-
-    /* ── STATUS BADGE ── */
-    .status-badge {
-      font-size: 11px; font-weight: 600;
-      padding: 3px 9px; border-radius: 99px;
-    }
-    .status-pending { background: #f3f4f6; color: #6b7280; }
-    .status-in_progress { background: var(--blue-light); color: var(--blue); }
-    .status-completed { background: var(--green-light); color: var(--green); }
-
-    /* ── NOTIFICATION BANNER ── */
-    .notif-banner {
-      background: var(--orange-light);
-      border: 1px solid #fde68a;
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      display: flex; align-items: center; gap: 10px;
-      font-size: 13px; color: #92400e;
-    }
-    .notif-banner.hidden { display: none; }
-
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      text-align: center; padding: 60px 20px;
-      color: var(--text-muted);
-    }
-    .empty-state svg { width: 48px; height: 48px; margin: 0 auto 12px; display: block; opacity: 0.3; }
-    .empty-state p { font-size: 15px; }
-
-    /* ── MONTH DETAIL (in dashboard) ── */
-    .month-items-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    .month-item-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-    }
-    .month-item-row .item-name { flex: 1; font-weight: 500; }
-    .month-item-row .item-date-sm { color: var(--text-muted); font-size: 12px; }
-
-    .full-card { grid-column: 1 / -1; }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-    /* Completion checkbox */
-    .check-btn {
-      width: 28px; height: 28px; border-radius: 8px;
-      border: 2px solid var(--border);
-      background: white; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; flex-shrink: 0;
-    }
-    .check-btn:hover { border-color: var(--green); }
-    .check-btn.checked { border-color: var(--green); background: var(--green); }
-    .check-btn svg { width: 14px; height: 14px; color: white; }
-
-    @media (max-width: 900px) {
-      .stats-grid { grid-template-columns: repeat(2,1fr); }
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .annual-grid { grid-template-columns: repeat(4,1fr); }
+    @media (max-width:1100px) {
+      .stats-grid { grid-template-columns:repeat(2,1fr); }
+      .dashboard-grid, .settings-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <h1>Compliance<br>Plan</h1>
     <span>Management System</span>
   </div>
   <nav class="sidebar-nav">
-    <button class="nav-item active" onclick="showPage('dashboard')">
+    <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
       Dashboard
     </button>
-    <button class="nav-item" onclick="showPage('list')">
+    <button class="nav-item" data-page="list" onclick="showPage('list')">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
       All Items
+    </button>
+    <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      Email Reminders
     </button>
   </nav>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
   <div class="topbar">
-    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <div class="topbar-left">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="year-picker" id="year-picker">
+        <button onclick="changeYear(-1)" title="Previous year">&#8249;</button>
+        <select id="year-select" onchange="setYear(parseInt(this.value))"></select>
+        <button onclick="changeYear(1)" title="Next year">&#8250;</button>
+      </div>
+      <button class="year-today" id="year-today" onclick="goToday()">Today</button>
+    </div>
     <button class="btn btn-primary" onclick="openModal()">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       Add Item
@@ -411,38 +245,25 @@
   </div>
 
   <div class="content">
-
-    <!-- NOTIFICATION BANNER -->
     <div class="notif-banner hidden" id="notif-banner">
       <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
       <span id="notif-text"></span>
     </div>
 
-    <!-- ── DASHBOARD PAGE ── -->
+    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="stats-grid" id="stats-grid"></div>
       <div class="dashboard-grid">
-        <!-- Urgent Items -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">⚠️ Upcoming Deadlines</span>
+            <span class="card-title">Annual Overview <span id="annual-year"></span></span>
+            <span class="card-hint">Click a month to see details</span>
           </div>
-          <div class="urgent-list" id="urgent-list">
-            <div class="empty-state"><p>No upcoming deadlines</p></div>
-          </div>
+          <div class="annual-grid" id="annual-grid"></div>
         </div>
-        <!-- This Month -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">This Month</span>
-          </div>
-          <div id="this-month-progress"></div>
-          <div class="month-items-list" id="this-month-list"></div>
-        </div>
-        <!-- Month Navigator -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Month View</div>
+            <div class="card-title">Month Detail</div>
             <div class="month-nav">
               <button onclick="changeNavMonth(-1)">&#8592;</button>
               <span id="nav-month-label"></span>
@@ -452,34 +273,114 @@
           <div id="nav-month-progress"></div>
           <div class="month-items-list" id="nav-month-list"></div>
         </div>
-        <!-- Annual Calendar -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">Annual Overview <span id="annual-year"></span></span>
+            <span class="card-title">⚠️ Needs Attention</span>
+            <span class="card-hint">Overdue + due within 30 days (all years)</span>
           </div>
-          <div class="annual-grid" id="annual-grid"></div>
+          <div class="urgent-list" id="urgent-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">By Category · <span id="bd-year"></span></span>
+          </div>
+          <div class="breakdown" id="cat-breakdown"></div>
+          <div class="section-sep"></div>
+          <div class="card-header" style="margin-bottom:10px">
+            <span class="card-title">Open Items by Assignee · <span id="bd-year2"></span></span>
+          </div>
+          <div class="assignee-chips" id="assignee-breakdown"></div>
         </div>
       </div>
     </div>
 
-    <!-- ── LIST PAGE ── -->
+    <!-- LIST -->
     <div class="page" id="page-list">
-      <div class="filters" id="filters">
-        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-        <button class="filter-btn" onclick="setFilter('Tax', this)">Tax</button>
-        <button class="filter-btn" onclick="setFilter('Fire Inspection', this)">Fire Inspection</button>
-        <button class="filter-btn" onclick="setFilter('Business Update', this)">Business Update</button>
-        <button class="filter-btn" onclick="setFilter('Other', this)">Other</button>
-        <button class="filter-btn" onclick="setFilter('__pending', this)">Pending</button>
-        <button class="filter-btn" onclick="setFilter('__completed', this)">Completed</button>
+      <div class="filters">
+        <button class="filter-btn active" data-f="all" onclick="setFilter('all')">All</button>
+        <button class="filter-btn" data-f="Tax" onclick="setFilter('Tax')">Tax</button>
+        <button class="filter-btn" data-f="Fire Inspection" onclick="setFilter('Fire Inspection')">Fire Inspection</button>
+        <button class="filter-btn" data-f="Business Update" onclick="setFilter('Business Update')">Business Update</button>
+        <button class="filter-btn" data-f="Other" onclick="setFilter('Other')">Other</button>
+        <span class="filter-sep"></span>
+        <button class="filter-btn" data-s="all" onclick="setStatusFilter('all')">Any status</button>
+        <button class="filter-btn" data-s="open" onclick="setStatusFilter('open')">Open</button>
+        <button class="filter-btn" data-s="completed" onclick="setStatusFilter('completed')">Completed</button>
+        <span class="filter-sep"></span>
+        <button class="filter-btn" id="allyears-btn" onclick="toggleAllYears()">All years</button>
+        <input class="search-input" id="search-input" placeholder="Search title / assignee…" oninput="renderList()" />
       </div>
+      <div class="list-summary" id="list-summary"></div>
       <div class="items-grid" id="items-grid"></div>
     </div>
 
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Reminder Rules</span></div>
+          <div class="setting-line">
+            <div>
+              <div style="font-size:14px;font-weight:500">Send automatic reminder emails</div>
+              <div class="form-help">A daily job (Google Apps Script, 7 AM ET) emails each assignee about their open items.</div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="s-enabled"><span></span></label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Remind before due date (days)</label>
+            <input class="form-input" id="s-days" placeholder="30, 7, 1" />
+            <div class="form-help">One email per stage. With "30, 7, 1" the assignee gets a mail at D-30, D-7 and D-1. Add 0 for a same-day reminder.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Overdue reminder — repeat every N days</label>
+            <input class="form-input" id="s-overdue" type="number" min="0" placeholder="3" />
+            <div class="form-help">0 = no overdue reminders. Overdue items older than 180 days are ignored.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">CC (manager) email</label>
+            <input class="form-input" id="s-cc" placeholder="manager@company.com" />
+            <div class="form-help">CC'd on every reminder. Items with no assignee email are sent here instead.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dashboard link (shown in email)</label>
+            <input class="form-input" id="s-url" placeholder="https://yt9495.github.io/Compliance-plan/" />
+          </div>
+          <div style="display:flex;justify-content:flex-end">
+            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header"><span class="card-title">Mail Job Status</span></div>
+            <div id="job-status"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Assignee Directory</span>
+              <span class="card-hint">Name → email autofill</span>
+            </div>
+            <table class="dir-table">
+              <thead><tr><th>Name</th><th>Email</th><th></th></tr></thead>
+              <tbody id="dir-body"></tbody>
+            </table>
+            <div class="dir-add">
+              <input class="form-input" id="d-name" placeholder="Name" />
+              <input class="form-input" id="d-email" placeholder="email@company.com" />
+              <button class="btn btn-ghost" onclick="addAssignee()">Add</button>
+            </div>
+            <div style="margin-top:14px">
+              <button class="btn btn-ghost btn-sm" onclick="syncEmailsToItems()">Fill missing emails on open items</button>
+              <div class="form-help">Sets the email on every open item whose assignee matches a name here but has no email yet.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
-<!-- ADD/EDIT MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -488,76 +389,79 @@
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
-    <div id="modal-form">
+    <div class="form-group">
+      <label class="form-label">Title *</label>
+      <input class="form-input" id="f-title" placeholder="e.g. Annual Tax Filing" />
+    </div>
+    <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Title *</label>
-        <input class="form-input" id="f-title" required placeholder="e.g. Annual Tax Filing" />
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Category *</label>
-          <select class="form-select" id="f-category" required>
-            <option value="">Select...</option>
-            <option>Tax</option>
-            <option>Fire Inspection</option>
-            <option>Business Update</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Status</label>
-          <select class="form-select" id="f-status">
-            <option value="pending">Pending</option>
-            <option value="in_progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Target Date * (MM/DD/YYYY)</label>
-          <input class="form-input" id="f-date" required placeholder="MM/DD/YYYY" maxlength="10" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Assignee</label>
-          <input class="form-input" id="f-assignee" placeholder="Name" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Repeat Cycle</label>
-        <select class="form-select" id="f-repeat" onchange="toggleCustom()">
-          <option value="none">One-time</option>
-          <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly (3 months)</option>
-          <option value="semi">Every 6 Months</option>
-          <option value="annually">Annually</option>
-          <option value="2y">Every 2 Years</option>
-          <option value="2.5y">Every 2.5 Years</option>
-          <option value="5y">Every 5 Years</option>
-          <option value="custom">Custom</option>
+        <label class="form-label">Category *</label>
+        <select class="form-select" id="f-category">
+          <option value="">Select...</option>
+          <option>Tax</option><option>Fire Inspection</option><option>Business Update</option><option>Other</option>
         </select>
-        <div class="custom-month-input" id="custom-month-wrap">
-          <input class="form-input" id="f-custom-months" type="number" min="1" placeholder="Enter number of months (e.g. 30 = 2.5 years)" />
-        </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Notes</label>
-        <input class="form-input" id="f-notes" placeholder="Optional notes" />
+        <label class="form-label">Status</label>
+        <select class="form-select" id="f-status">
+          <option value="pending">Pending</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
       </div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
-        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="saveItem()">Save Item</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Target Date * (MM/DD/YYYY)</label>
+      <input class="form-input" id="f-date" placeholder="MM/DD/YYYY" maxlength="10" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Assignee</label>
+        <input class="form-input" id="f-assignee" placeholder="Name" list="assignee-list" oninput="autofillEmail()" />
+        <datalist id="assignee-list"></datalist>
       </div>
+      <div class="form-group">
+        <label class="form-label">Assignee Email</label>
+        <input class="form-input" id="f-email" placeholder="for reminders" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Repeat Cycle</label>
+      <select class="form-select" id="f-repeat" onchange="toggleCustom()">
+        <option value="none">One-time</option>
+        <option value="monthly">Monthly</option>
+        <option value="quarterly">Quarterly (3 months)</option>
+        <option value="semi">Every 6 Months</option>
+        <option value="annually">Annually</option>
+        <option value="2y">Every 2 Years</option>
+        <option value="2.5y">Every 2.5 Years</option>
+        <option value="5y">Every 5 Years</option>
+        <option value="custom">Custom</option>
+      </select>
+      <div class="custom-month-input" id="custom-month-wrap">
+        <input class="form-input" id="f-custom-months" type="number" min="1" placeholder="Number of months (e.g. 30 = 2.5 years)" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <input class="form-input" id="f-notes" placeholder="Optional notes" />
+    </div>
+    <div class="form-group" id="series-wrap" style="display:none">
+      <label class="check-line"><input type="checkbox" id="f-series" checked>
+        <span>Also apply assignee, email, category and notes to all <b>future open</b> items with the same title (<span id="series-count">0</span> items)</span>
+      </label>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+      <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" onclick="saveItem()">Save Item</button>
     </div>
   </div>
 </div>
+<div class="toast" id="toast"></div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-
-// ── FIREBASE CONFIG ── Replace with your config ──
 const firebaseConfig = {
   apiKey: "AIzaSyBX1NPea4zhj5cHScxeahIX3o3xMSm_s84",
   authDomain: "jnfam-compliance.firebaseapp.com",
@@ -567,19 +471,30 @@ const firebaseConfig = {
   appId: "1:688895979703:web:be24576bf73139ecbc9d32",
   measurementId: "G-HK6Z58NT35"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const colRef = db.collection("compliance_items");
+const settingsRef = db.collection("compliance_settings").doc("notify");
+const dirRef = db.collection("compliance_assignees");
 
 // ── STATE ──
+const TODAY = new Date();
 let items = [];
+let assignees = [];
+let settings = {};
 let editingId = null;
-let currentFilter = 'all';
-let navYear = new Date().getFullYear();
-let navMonth = new Date().getMonth(); // 0-indexed
+let catFilter = 'all';
+let statusFilter = 'all';
+let allYears = false;
+let selYear = TODAY.getFullYear();
+let navMonth = TODAY.getMonth();
+try { const y = parseInt(localStorage.getItem('cp_year')); if (y > 2000 && y < 2100) selYear = y; } catch(e) {}
+if (selYear !== TODAY.getFullYear()) navMonth = 0;
+
+const DEFAULT_SETTINGS = { enabled: true, reminderDays: [30, 7, 1], overdueEveryDays: 3, ccEmail: '', dashboardUrl: 'https://yt9495.github.io/Compliance-plan/' };
 
 // ── HELPERS ──
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function parseDate(str) {
   if (!str) return null;
   const [m, d, y] = str.split('/');
@@ -588,49 +503,71 @@ function parseDate(str) {
 }
 function formatDate(d) {
   if (!d) return '';
-  const mm = String(d.getMonth() + 1).padStart(2,'0');
-  const dd = String(d.getDate()).padStart(2,'0');
-  const yyyy = d.getFullYear();
-  return `${mm}/${dd}/${yyyy}`;
+  return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`;
 }
 function daysUntil(dateStr) {
-  const t = parseDate(dateStr);
-  if (!t) return null;
+  const t = parseDate(dateStr); if (!t) return null;
   const now = new Date(); now.setHours(0,0,0,0);
-  return Math.ceil((t - now) / 86400000);
+  return Math.round((t - now) / 86400000);
 }
+const MONTH_MAP = { monthly:1, quarterly:3, semi:6, annually:12, '2y':24, '2.5y':30, '5y':60 };
 function cycleMonths(repeat, customMonths) {
-  const map = { monthly:1, quarterly:3, semi:6, annually:12, '2y':24, '2.5y':30, '5y':60 };
   if (repeat === 'custom') return parseInt(customMonths) || 0;
-  return map[repeat] || 0;
+  return MONTH_MAP[(repeat||'').toLowerCase().trim()] || 0;
 }
 function addMonths(dateStr, months) {
-  const d = parseDate(dateStr);
-  if (!d) return '';
-  d.setMonth(d.getMonth() + months);
+  const d = parseDate(dateStr); if (!d) return '';
+  const day = d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth() + months);
+  const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+  d.setDate(Math.min(day, last));   // 01/31 + 1 month → 02/28, not 03/03
   return formatDate(d);
 }
-function getCatClass(cat) {
-  const map = { 'Tax':'cat-tax', 'Fire Inspection':'cat-fire', 'Business Update':'cat-business', 'Other':'cat-other' };
-  return map[cat] || 'cat-other';
+function getCatClass(cat) { return ({ 'Tax':'cat-tax', 'Fire Inspection':'cat-fire', 'Business Update':'cat-business', 'Other':'cat-other' })[cat] || 'cat-other'; }
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function isDone(i) { return i.status === 'completed'; }
+function inYear(i, y) { const d = parseDate(i.targetDate); return d && d.getFullYear() === y; }
+function inMonth(i, y, m) { const d = parseDate(i.targetDate); return d && d.getFullYear() === y && d.getMonth() === m; }
+function byDate(a, b) { return (parseDate(a.targetDate) || 0) - (parseDate(b.targetDate) || 0); }
+function ddayBadge(days) {
+  const cls = days < 0 ? 'dday-red' : days <= 7 ? 'dday-red' : days <= 14 ? 'dday-orange' : 'dday-blue';
+  const label = days < 0 ? `OVERDUE ${-days}d` : days === 0 ? 'TODAY' : `D-${days}`;
+  return `<span class="dday-badge ${cls}">${label}</span>`;
 }
-function getMonthName(m) {
-  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m];
+function checkBtn(i) {
+  const c = isDone(i);
+  return `<button class="check-btn ${c?'checked':''}" onclick="toggleComplete('${i.id}')" title="${c?'Mark incomplete':'Mark complete'}">${c?'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>':''}</button>`;
 }
-
-// ── DATE INPUT FORMATTING ──
-window.formatDateInput = function(input) {
-  let v = input.value.replace(/\D/g,'');
-  if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
-  if (v.length >= 6) v = v.slice(0,5)+'/'+v.slice(5);
-  input.value = v.slice(0,10);
-}
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); }
+function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
 // ── FIRESTORE REALTIME ──
-colRef.onSnapshot((snap) => {
-  items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+colRef.onSnapshot(snap => { items = snap.docs.map(d => ({ id: d.id, ...d.data() })); render(); });
+dirRef.onSnapshot(snap => { assignees = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.name||'').localeCompare(b.name||'')); renderDirectory(); });
+settingsRef.onSnapshot(doc => { settings = Object.assign({}, DEFAULT_SETTINGS, doc.exists ? doc.data() : {}); renderSettings(); });
+
+// ── YEAR ──
+function yearOptions() {
+  const ys = new Set([TODAY.getFullYear(), selYear]);
+  items.forEach(i => { const d = parseDate(i.targetDate); if (d) ys.add(d.getFullYear()); });
+  return [...ys].sort((a,b) => a-b);
+}
+function renderYearSelect() {
+  const sel = document.getElementById('year-select');
+  sel.innerHTML = yearOptions().map(y => {
+    const n = items.filter(i => inYear(i, y)).length;
+    return `<option value="${y}" ${y===selYear?'selected':''}>${y}${n ? ` (${n})` : ''}</option>`;
+  }).join('');
+  document.getElementById('year-today').style.visibility = (selYear === TODAY.getFullYear() && navMonth === TODAY.getMonth()) ? 'hidden' : 'visible';
+}
+window.setYear = function(y) {
+  selYear = y;
+  try { localStorage.setItem('cp_year', y); } catch(e) {}
+  navMonth = (y === TODAY.getFullYear()) ? TODAY.getMonth() : 0;
   render();
-});
+};
+window.changeYear = function(delta) { setYear(selYear + delta); };
+window.goToday = function() { setYear(TODAY.getFullYear()); };
 
 // ── SAVE ITEM ──
 window.saveItem = async function() {
@@ -639,379 +576,344 @@ window.saveItem = async function() {
   const status   = document.getElementById('f-status').value;
   const dateRaw  = document.getElementById('f-date').value.trim();
   const assignee = document.getElementById('f-assignee').value.trim();
+  const assigneeEmail = document.getElementById('f-email').value.trim();
   const repeat   = document.getElementById('f-repeat').value;
   const customM  = document.getElementById('f-custom-months').value;
   const notes    = document.getElementById('f-notes').value.trim();
 
-  // Validate required fields
   if (!title) { alert('Please enter a title'); return; }
   if (!category) { alert('Please select a category'); return; }
-  if (!dateRaw) { alert('Please enter a target date'); return; }
-
-  // Validate date format MM/DD/YYYY
-  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateRaw)) {
-    alert('Please enter date in MM/DD/YYYY format (e.g. 01/15/2027)');
-    return;
-  }
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateRaw)) { alert('Please enter date in MM/DD/YYYY format (e.g. 01/15/2027)'); return; }
   const parsed = parseDate(dateRaw);
-  if (!parsed || isNaN(parsed.getTime())) {
-    alert('Invalid date. Please check MM/DD/YYYY');
-    return;
-  }
+  if (!parsed || isNaN(parsed.getTime())) { alert('Invalid date. Please check MM/DD/YYYY'); return; }
+  if (assigneeEmail && !validEmail(assigneeEmail)) { alert('Please check the assignee email'); return; }
 
-  const data = { title, category, status, targetDate: dateRaw, assignee, repeat, customMonths: customM, notes, notified30: false, completedAt: null };
-  if (status === 'completed') data.completedAt = new Date().toISOString();
-
+  const data = { title, category, status, targetDate: dateRaw, assignee, assigneeEmail, repeat, customMonths: customM, notes };
   try {
     if (editingId) {
-      // 편집 시: 해당 항목만 업데이트
-      await db.collection('compliance_items').doc(editingId).update(data);
+      const old = items.find(i => i.id === editingId) || {};
+      if (old.targetDate !== dateRaw) { data.notifiedKeys = []; data.lastOverdueNotice = null; }
+      if (status === 'completed' && old.status !== 'completed') data.completedAt = new Date().toISOString();
+      if (status !== 'completed') data.completedAt = null;
+      const batch = db.batch();
+      batch.update(colRef.doc(editingId), data);
+      if (document.getElementById('f-series').checked) {
+        seriesItems(old).forEach(s => batch.update(colRef.doc(s.id), { assignee, assigneeEmail, category, notes }));
+      }
+      await batch.commit();
     } else {
-      // 신규: 첫 항목 저장
-      await colRef.add(data);
-
-      // 반복 주기 있으면 10년치 미래 일정 자동 생성
+      data.notifiedKeys = []; data.lastOverdueNotice = null;
+      data.completedAt = status === 'completed' ? new Date().toISOString() : null;
+      const batch = db.batch();
+      batch.set(colRef.doc(), data);
       const months = cycleMonths(repeat, customM);
-      if (months > 0 && repeat !== 'none') {
-        const maxMonths = 10 * 12;
-        let accumulated = months;
-        while (accumulated <= maxMonths) {
-          const futureDate = addMonths(dateRaw, accumulated);
-          await colRef.add({
-            title, category, assignee, repeat, customMonths: customM, notes,
-            targetDate: futureDate,
-            status: 'pending',
-            notified30: false,
-            completedAt: null
-          });
-          accumulated += months;
+      if (months > 0) {
+        for (let acc = months; acc <= 120; acc += months) {
+          batch.set(colRef.doc(), { ...data, targetDate: addMonths(dateRaw, acc), status: 'pending', completedAt: null });
         }
       }
+      await batch.commit();
     }
     closeModal();
-  } catch(err) {
-    alert('Save failed: ' + err.message);
-  }
+    toast('Saved');
+  } catch(err) { alert('Save failed: ' + err.message); }
 };
 
-// ── COMPLETE ITEM ──
+// future open items of the same series (same title, later date, not completed)
+function seriesItems(item) {
+  if (!item || !item.title) return [];
+  const base = parseDate(item.targetDate);
+  return items.filter(i => i.id !== item.id && i.title === item.title && !isDone(i) && base && parseDate(i.targetDate) > base);
+}
+
+// ── COMPLETE ──
 window.toggleComplete = async function(id) {
   const item = items.find(i => i.id === id);
-  if (!item) { alert('Item not found: ' + id); return; }
-
-  // 완료 → 미완료로 되돌리기
-  if (item.status === 'completed') {
-    await db.collection('compliance_items').doc(id).update({ status: 'pending', completedAt: null });
-    return;
-  }
-
-  // 완료 처리
-  await db.collection('compliance_items').doc(id).update({ status: 'completed', completedAt: new Date().toISOString() });
-
-  // 반복 주기 계산
-  const repeatVal = (item.repeat || '').toLowerCase().trim();
-  const monthMap = { 'monthly':1, 'quarterly':3, 'semi':6, 'annually':12, '2y':24, '2.5y':30, '5y':60 };
-  let months = 0;
-  if (repeatVal === 'custom') {
-    months = parseInt(item.customMonths) || 0;
-  } else {
-    months = monthMap[repeatVal] || 0;
-  }
-
+  if (!item) return;
+  if (isDone(item)) { await colRef.doc(id).update({ status: 'pending', completedAt: null }); return; }
+  await colRef.doc(id).update({ status: 'completed', completedAt: new Date().toISOString() });
+  const months = cycleMonths(item.repeat, item.customMonths);
   if (months > 0) {
     const nextDate = addMonths(item.targetDate, months);
     const exists = items.some(i => i.title === item.title && i.targetDate === nextDate && i.id !== id);
     if (!exists) {
-      try {
-        await colRef.add({
-          title: item.title,
-          category: item.category || '',
-          assignee: item.assignee || '',
-          repeat: item.repeat || 'none',
-          customMonths: item.customMonths || '',
-          notes: item.notes || '',
-          targetDate: nextDate,
-          status: 'pending',
-          notified30: false,
-          completedAt: null
-        });
-      } catch(err) {
-        console.error('Next item creation failed:', err);
-      }
+      await colRef.add({
+        title: item.title, category: item.category || '', assignee: item.assignee || '', assigneeEmail: item.assigneeEmail || '',
+        repeat: item.repeat || 'none', customMonths: item.customMonths || '', notes: item.notes || '',
+        targetDate: nextDate, status: 'pending', completedAt: null, notifiedKeys: [], lastOverdueNotice: null
+      }).catch(err => console.error('Next item creation failed:', err));
     }
   }
 };
 
-// ── DELETE ──
 window.deleteItem = async function(id) {
   if (!confirm('Delete this item?')) return;
-  await db.collection('compliance_items').doc(id).delete();
+  await colRef.doc(id).delete();
 };
 
-// ── EDIT ──
-window.editItem = function(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  editingId = id;
-  document.getElementById('modal-title').textContent = 'Edit Item';
+// ── MODAL ──
+function fillForm(item) {
   document.getElementById('f-title').value = item.title || '';
   document.getElementById('f-category').value = item.category || '';
   document.getElementById('f-status').value = item.status || 'pending';
   document.getElementById('f-date').value = item.targetDate || '';
   document.getElementById('f-assignee').value = item.assignee || '';
+  document.getElementById('f-email').value = item.assigneeEmail || '';
   document.getElementById('f-repeat').value = item.repeat || 'none';
   document.getElementById('f-custom-months').value = item.customMonths || '';
   document.getElementById('f-notes').value = item.notes || '';
   toggleCustom();
+}
+window.editItem = function(id) {
+  const item = items.find(i => i.id === id); if (!item) return;
+  editingId = id;
+  document.getElementById('modal-title').textContent = 'Edit Item';
+  fillForm(item);
+  const n = seriesItems(item).length;
+  document.getElementById('series-wrap').style.display = n ? 'block' : 'none';
+  document.getElementById('f-series').checked = n > 0;
+  document.getElementById('series-count').textContent = n;
   document.getElementById('modal-overlay').classList.add('open');
 };
-
-// ── MODAL ──
 window.openModal = function() {
   editingId = null;
   document.getElementById('modal-title').textContent = 'Add Compliance Item';
-  document.getElementById('f-title').value = '';
-  document.getElementById('f-category').value = '';
-  document.getElementById('f-status').value = 'pending';
-  document.getElementById('f-date').value = '';
-  document.getElementById('f-assignee').value = '';
-  document.getElementById('f-repeat').value = 'none';
-  document.getElementById('f-custom-months').value = '';
-  document.getElementById('f-notes').value = '';
-  toggleCustom();
+  fillForm({});
+  document.getElementById('series-wrap').style.display = 'none';
+  document.getElementById('f-series').checked = false;
   document.getElementById('modal-overlay').classList.add('open');
 };
 window.closeModal = function() { document.getElementById('modal-overlay').classList.remove('open'); };
-window.closeModalOutside = function(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); };
-window.toggleCustom = function() {
-  const v = document.getElementById('f-repeat').value;
-  document.getElementById('custom-month-wrap').classList.toggle('show', v === 'custom');
+window.closeModalOutside = function(e) { if (e.target.id === 'modal-overlay') closeModal(); };
+window.toggleCustom = function() { document.getElementById('custom-month-wrap').classList.toggle('show', document.getElementById('f-repeat').value === 'custom'); };
+window.autofillEmail = function() {
+  const name = document.getElementById('f-assignee').value.trim().toLowerCase();
+  const hit = assignees.find(a => (a.name||'').toLowerCase() === name);
+  if (hit) document.getElementById('f-email').value = hit.email || '';
 };
 
-// ── NAV MONTH ──
+// ── NAV ──
 window.changeNavMonth = function(delta) {
   navMonth += delta;
-  if (navMonth > 11) { navMonth = 0; navYear++; }
-  if (navMonth < 0) { navMonth = 11; navYear--; }
-  renderNavMonth();
+  if (navMonth > 11) { navMonth = 0; selYear++; }
+  if (navMonth < 0) { navMonth = 11; selYear--; }
+  render();
 };
-
-// ── FILTER ──
-window.setFilter = function(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderList();
-};
-
-// ── PAGE NAV ──
+window.jumpToMonth = function(m) { navMonth = m; renderAnnual(); renderNavMonth(); renderYearSelect(); };
+window.setFilter = function(f) { catFilter = f; renderList(); };
+window.setStatusFilter = function(s) { statusFilter = s; renderList(); };
+window.toggleAllYears = function() { allYears = !allYears; renderList(); };
 window.showPage = function(p) {
-  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.getElementById('page-' + p).classList.add('active');
-  event.currentTarget.classList.add('active');
-  document.getElementById('topbar-title').textContent = p === 'dashboard' ? 'Dashboard' : 'All Items';
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'page-' + p));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === p));
+  document.getElementById('topbar-title').textContent = ({ dashboard:'Dashboard', list:'All Items', settings:'Email Reminders' })[p];
+  document.getElementById('year-picker').style.display = p === 'settings' ? 'none' : 'flex';
+  document.getElementById('year-today').style.display = p === 'settings' ? 'none' : '';
+};
+window.showOpenList = function(mode) {
+  statusFilter = 'open'; catFilter = 'all'; allYears = mode === 'all';
+  showPage('list'); renderList();
 };
 
 // ── RENDER ──
 function render() {
+  renderYearSelect();
   renderStats();
-  renderUrgent();
-  renderThisMonth();
-  renderNavMonth();
   renderAnnual();
+  renderNavMonth();
+  renderUrgent();
+  renderBreakdown();
   renderList();
   renderNotification();
 }
 
 function renderStats() {
-  const total = items.length;
-  const completed = items.filter(i => i.status === 'completed').length;
-  const urgent = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d <= 7 && i.status !== 'completed'; }).length;
-  const warning = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d > 7 && d <= 30 && i.status !== 'completed'; }).length;
-  const pct = total ? Math.round(completed / total * 100) : 0;
+  const yItems = items.filter(i => inYear(i, selYear));
+  const done = yItems.filter(isDone).length;
+  const pct = yItems.length ? Math.round(done / yItems.length * 100) : 0;
+  const open = items.filter(i => !isDone(i)).map(i => ({ ...i, days: daysUntil(i.targetDate) })).filter(i => i.days !== null);
+  const overdue = open.filter(i => i.days < 0).length;
+  const due7 = open.filter(i => i.days >= 0 && i.days <= 7).length;
+  const due30 = open.filter(i => i.days >= 0 && i.days <= 30).length;
+  const yOpen = yItems.length - done;
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card">
-      <div class="stat-label">Overall Progress</div>
+      <div class="stat-label">${selYear} Progress</div>
       <div class="stat-value">${pct}%</div>
-      <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" style="width:${pct}%"></div></div>
-      <div class="stat-sub">${completed} of ${total} completed</div>
+      <div class="progress-bar" style="margin-top:10px"><div class="progress-fill ${pct===100?'green':''}" style="width:${pct}%"></div></div>
+      <div class="stat-sub">${done} of ${yItems.length} completed in ${selYear}</div>
+    </div>
+    <div class="stat-card clickable" onclick="showOpenList('year')">
+      <div class="stat-label">${selYear} Remaining</div>
+      <div class="stat-value">${yOpen}</div>
+      <div class="stat-sub">Open items due in ${selYear} →</div>
+    </div>
+    <div class="stat-card clickable" onclick="showOpenList('all')">
+      <div class="stat-label">🔴 Overdue</div>
+      <div class="stat-value" style="color:${overdue?'var(--red)':'var(--text-primary)'}">${overdue}</div>
+      <div class="stat-sub">Past due, not completed (all years)</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Total Items</div>
-      <div class="stat-value">${total}</div>
-      <div class="stat-sub">Across all categories</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">🔴 Urgent (≤7 days)</div>
-      <div class="stat-value" style="color:var(--red)">${urgent}</div>
-      <div class="stat-sub">Needs immediate attention</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">🟠 Warning (≤30 days)</div>
-      <div class="stat-value" style="color:var(--orange)">${warning}</div>
-      <div class="stat-sub">Approaching deadline</div>
-    </div>
-  `;
-}
-
-function renderUrgent() {
-  const now = new Date(); now.setHours(0,0,0,0);
-  const upcoming = items
-    .filter(i => i.status !== 'completed')
-    .map(i => ({ ...i, days: daysUntil(i.targetDate) }))
-    .filter(i => i.days !== null && i.days <= 30)
-    .sort((a,b) => a.days - b.days)
-    .slice(0,8);
-
-  const el = document.getElementById('urgent-list');
-  if (!upcoming.length) { el.innerHTML = '<div class="empty-state"><p>No upcoming deadlines within 30 days 🎉</p></div>'; return; }
-  el.innerHTML = upcoming.map(i => {
-    const cls = i.days <= 7 ? 'dday-red' : i.days <= 14 ? 'dday-orange' : 'dday-blue';
-    const label = i.days < 0 ? `OVERDUE` : i.days === 0 ? 'TODAY' : `D-${i.days}`;
-    return `<div class="urgent-item">
-      <span class="dday-badge ${cls}">${label}</span>
-      <div class="urgent-info">
-        <div class="urgent-title">${i.title}</div>
-        <div class="urgent-meta">${i.category} ${i.assignee ? '· ' + i.assignee : ''} · ${i.targetDate}</div>
-      </div>
+      <div class="stat-label">🟠 Due in 30 days</div>
+      <div class="stat-value" style="color:${due30?'var(--orange)':'var(--text-primary)'}">${due30}</div>
+      <div class="stat-sub">${due7} of them within 7 days</div>
     </div>`;
-  }).join('');
-}
-
-function renderThisMonth() {
-  const now = new Date();
-  const y = now.getFullYear(), m = now.getMonth();
-  const monthItems = items.filter(i => {
-    const d = parseDate(i.targetDate);
-    return d && d.getFullYear() === y && d.getMonth() === m;
-  });
-  const done = monthItems.filter(i => i.status === 'completed').length;
-  const pct = monthItems.length ? Math.round(done / monthItems.length * 100) : 0;
-
-  document.getElementById('this-month-progress').innerHTML = `
-    <div class="progress-wrap">
-      <div class="progress-label"><span>${getMonthName(m)} ${y}</span><span>${done}/${monthItems.length} · ${pct}%</span></div>
-      <div class="progress-bar"><div class="progress-fill ${pct===100?'green':pct>=50?'':'orange'}" style="width:${pct}%"></div></div>
-    </div>`;
-
-  const el = document.getElementById('this-month-list');
-  if (!monthItems.length) { el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No items this month</p></div>'; return; }
-  el.innerHTML = monthItems.sort((a,b)=>parseDate(a.targetDate)-parseDate(b.targetDate)).map(i => `
-    <div class="month-item-row">
-      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
-      <span class="item-name">${i.title}</span>
-      <span class="item-date-sm">${i.targetDate}</span>
-      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
-    </div>`).join('');
-}
-
-function renderNavMonth() {
-  document.getElementById('nav-month-label').textContent = `${getMonthName(navMonth)} ${navYear}`;
-  const monthItems = items.filter(i => {
-    const d = parseDate(i.targetDate);
-    return d && d.getFullYear() === navYear && d.getMonth() === navMonth;
-  });
-  const done = monthItems.filter(i => i.status === 'completed').length;
-  const pct = monthItems.length ? Math.round(done / monthItems.length * 100) : 0;
-
-  document.getElementById('nav-month-progress').innerHTML = `
-    <div class="progress-wrap">
-      <div class="progress-label"><span>${done}/${monthItems.length} completed</span><span>${pct}%</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-    </div>`;
-
-  const el = document.getElementById('nav-month-list');
-  if (!monthItems.length) { el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No items this month</p></div>'; return; }
-  el.innerHTML = monthItems.sort((a,b)=>parseDate(a.targetDate)-parseDate(b.targetDate)).map(i => `
-    <div class="month-item-row">
-      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
-      <span class="item-name">${i.title}</span>
-      <span class="item-date-sm">${i.targetDate}</span>
-      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
-    </div>`).join('');
 }
 
 function renderAnnual() {
-  const y = new Date().getFullYear();
-  document.getElementById('annual-year').textContent = y;
-  const now = new Date();
-  const grid = document.getElementById('annual-grid');
-  grid.innerHTML = Array.from({length:12},(_,m) => {
-    const monthItems = items.filter(i => {
-      const d = parseDate(i.targetDate);
-      return d && d.getFullYear() === y && d.getMonth() === m;
-    });
-    const done = monthItems.filter(i => i.status === 'completed').length;
-    const urgent = monthItems.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d <= 7 && i.status !== 'completed'; }).length;
-    const isCurrent = m === now.getMonth();
-    return `<div class="month-cell ${monthItems.length?'has-items':''} ${isCurrent?'current-month':''}" onclick="jumpToMonth(${m})">
-      <div class="month-cell-name">${getMonthName(m)}</div>
-      <div class="month-cell-count">${monthItems.length || '-'}</div>
-      <div class="month-cell-badges">
-        ${done ? `<div class="mini-badge" style="background:var(--green)" title="${done} done"></div>` : ''}
-        ${urgent ? `<div class="mini-badge" style="background:var(--red)" title="${urgent} urgent"></div>` : ''}
-      </div>
+  document.getElementById('annual-year').textContent = selYear;
+  const isThisYear = selYear === TODAY.getFullYear();
+  document.getElementById('annual-grid').innerHTML = MONTHS.map((name, m) => {
+    const mi = items.filter(i => inMonth(i, selYear, m));
+    const done = mi.filter(isDone).length;
+    const od = mi.some(i => !isDone(i) && daysUntil(i.targetDate) < 0);
+    const pct = mi.length ? Math.round(done / mi.length * 100) : 0;
+    const cls = [mi.length ? '' : 'empty', isThisYear && m === TODAY.getMonth() ? 'current-month' : '', m === navMonth ? 'selected' : ''].join(' ');
+    return `<div class="month-cell ${cls}" onclick="jumpToMonth(${m})" title="${done}/${mi.length} completed">
+      ${od ? '<span class="od-dot" title="Has overdue items"></span>' : ''}
+      <div class="month-cell-name">${name}</div>
+      <div class="month-cell-count">${mi.length ? `${done}<small>/${mi.length}</small>` : '–'}</div>
+      <div class="mini-bar"><div style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 }
 
-window.jumpToMonth = function(m) {
-  navMonth = m; navYear = new Date().getFullYear();
-  renderNavMonth();
-};
+function renderNavMonth() {
+  document.getElementById('nav-month-label').textContent = `${MONTHS[navMonth]} ${selYear}`;
+  const mi = items.filter(i => inMonth(i, selYear, navMonth)).sort(byDate);
+  const done = mi.filter(isDone).length;
+  const pct = mi.length ? Math.round(done / mi.length * 100) : 0;
+  document.getElementById('nav-month-progress').innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-label"><span>${done}/${mi.length} completed</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill ${pct===100?'green':''}" style="width:${pct}%"></div></div>
+    </div>`;
+  const el = document.getElementById('nav-month-list');
+  if (!mi.length) { el.innerHTML = '<div class="empty-state" style="padding:20px">No items this month</div>'; return; }
+  el.innerHTML = mi.map(i => `
+    <div class="row">
+      ${checkBtn(i)}
+      <span class="cat-badge ${getCatClass(i.category)}">${esc(i.category)}</span>
+      <div class="grow"><div class="t">${esc(i.title)}</div>${i.assignee ? `<div class="m">👤 ${esc(i.assignee)}${i.assigneeEmail ? ' · 📧' : ''}</div>` : ''}</div>
+      <span class="d">${i.targetDate}</span>
+      <span class="status-badge status-${i.status}">${(i.status||'').replace('_',' ')}</span>
+    </div>`).join('');
+}
+
+function renderUrgent() {
+  const list = items.filter(i => !isDone(i))
+    .map(i => ({ ...i, days: daysUntil(i.targetDate) }))
+    .filter(i => i.days !== null && i.days <= 30)
+    .sort((a,b) => a.days - b.days);
+  const el = document.getElementById('urgent-list');
+  if (!list.length) { el.innerHTML = '<div class="empty-state">Nothing overdue or due within 30 days 🎉</div>'; return; }
+  el.innerHTML = list.map(i => `
+    <div class="row">
+      ${checkBtn(i)}
+      ${ddayBadge(i.days)}
+      <div class="grow">
+        <div class="t">${esc(i.title)}</div>
+        <div class="m">${esc(i.category)}${i.assignee ? ' · ' + esc(i.assignee) : ' · <span style="color:var(--red)">no assignee</span>'} · ${i.targetDate}${i.assigneeEmail ? '' : ' · <span style="color:var(--orange)">no email</span>'}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="editItem('${i.id}')">Edit</button>
+    </div>`).join('');
+}
+
+function renderBreakdown() {
+  document.getElementById('bd-year').textContent = selYear;
+  document.getElementById('bd-year2').textContent = selYear;
+  const yItems = items.filter(i => inYear(i, selYear));
+  const cats = ['Tax', 'Fire Inspection', 'Business Update', 'Other'];
+  const catEl = document.getElementById('cat-breakdown');
+  if (!yItems.length) { catEl.innerHTML = `<div class="empty-state" style="padding:16px">No items in ${selYear}</div>`; }
+  else catEl.innerHTML = cats.map(c => {
+    const ci = yItems.filter(i => (i.category || 'Other') === c);
+    if (!ci.length) return '';
+    const d = ci.filter(isDone).length, pct = Math.round(d / ci.length * 100);
+    return `<div class="bd-row">
+      <div class="progress-label"><span><span class="cat-badge ${getCatClass(c)}" style="margin-right:8px">${c}</span></span><span class="bd-sub">${d}/${ci.length} · ${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill ${pct===100?'green':''}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const open = yItems.filter(i => !isDone(i));
+  const map = {};
+  open.forEach(i => {
+    const k = i.assignee || '(Unassigned)';
+    map[k] = map[k] || { n: 0, od: 0, noMail: 0 };
+    map[k].n++;
+    if (daysUntil(i.targetDate) < 0) map[k].od++;
+    if (!i.assigneeEmail) map[k].noMail++;
+  });
+  const aEl = document.getElementById('assignee-breakdown');
+  const keys = Object.keys(map).sort((a,b) => map[b].n - map[a].n);
+  aEl.innerHTML = keys.length ? keys.map(k => `<span class="a-chip ${map[k].od || k==='(Unassigned)' ? 'warn' : ''}" title="${map[k].noMail ? map[k].noMail + ' without email' : ''}">${esc(k)} <b>${map[k].n}</b>${map[k].od ? ` · ${map[k].od} overdue` : ''}${map[k].noMail ? ' · ✉︎?' : ''}</span>`).join('')
+    : '<span class="bd-sub">No open items</span>';
+}
 
 function renderNotification() {
-  const urgent = items.filter(i => { const d = daysUntil(i.targetDate); return d !== null && d >= 0 && d <= 30 && i.status !== 'completed'; });
+  const open = items.filter(i => !isDone(i)).map(i => daysUntil(i.targetDate)).filter(d => d !== null);
+  const od = open.filter(d => d < 0).length, soon = open.filter(d => d >= 0 && d <= 30).length;
   const banner = document.getElementById('notif-banner');
-  if (urgent.length) {
-    banner.classList.remove('hidden');
-    document.getElementById('notif-text').textContent = `⚠️ ${urgent.length} item${urgent.length>1?'s':''} due within 30 days — please review upcoming deadlines.`;
-  } else {
-    banner.classList.add('hidden');
-  }
+  if (!od && !soon) { banner.classList.add('hidden'); return; }
+  banner.classList.remove('hidden');
+  banner.classList.toggle('red', od > 0);
+  const parts = [];
+  if (od) parts.push(`${od} overdue`);
+  if (soon) parts.push(`${soon} due within 30 days`);
+  document.getElementById('notif-text').textContent = `${parts.join(' · ')} — please review.`;
 }
 
 function renderList() {
-  let filtered = items;
-  if (currentFilter === '__pending') filtered = items.filter(i => i.status !== 'completed');
-  else if (currentFilter === '__completed') filtered = items.filter(i => i.status === 'completed');
-  else if (currentFilter !== 'all') filtered = items.filter(i => i.category === currentFilter);
+  document.querySelectorAll('.filter-btn[data-f]').forEach(b => b.classList.toggle('active', b.dataset.f === catFilter));
+  document.querySelectorAll('.filter-btn[data-s]').forEach(b => b.classList.toggle('active', b.dataset.s === statusFilter));
+  document.getElementById('allyears-btn').classList.toggle('active', allYears);
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
 
-  filtered = filtered.sort((a,b) => {
-    const da = parseDate(a.targetDate), db2 = parseDate(b.targetDate);
-    if (!da && !db2) return 0; if (!da) return 1; if (!db2) return -1;
-    return da - db2;
-  });
+  let f = items.slice();
+  if (!allYears) f = f.filter(i => inYear(i, selYear));
+  if (catFilter !== 'all') f = f.filter(i => i.category === catFilter);
+  if (statusFilter === 'open') f = f.filter(i => !isDone(i));
+  if (statusFilter === 'completed') f = f.filter(isDone);
+  if (q) f = f.filter(i => [i.title, i.assignee, i.notes, i.assigneeEmail].some(v => (v||'').toLowerCase().includes(q)));
+  f.sort(byDate);
 
+  document.getElementById('list-summary').textContent = `${f.length} item${f.length===1?'':'s'} · ${allYears ? 'all years' : selYear} · ${f.filter(isDone).length} completed`;
   const el = document.getElementById('items-grid');
-  if (!filtered.length) { el.innerHTML = '<div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><p>No items found</p></div>'; return; }
+  if (!f.length) { el.innerHTML = '<div class="empty-state">No items found</div>'; return; }
 
-  el.innerHTML = filtered.map(i => {
+  let lastGroup = '';
+  el.innerHTML = f.map(i => {
+    const dt = parseDate(i.targetDate);
+    const group = dt ? `${MONTHS[dt.getMonth()]} ${dt.getFullYear()}` : 'No date';
+    const header = group !== lastGroup ? `<div class="month-group-title">${group}</div>` : '';
+    lastGroup = group;
     const d = daysUntil(i.targetDate);
-    const isUrgent = d !== null && d <= 7 && i.status !== 'completed';
-    const isWarning = d !== null && d > 7 && d <= 30 && i.status !== 'completed';
-    const dLabel = d === null ? '' : d < 0 ? `<span style="color:var(--red);font-weight:600">OVERDUE ${Math.abs(d)}d</span>` : d === 0 ? `<span style="color:var(--red);font-weight:600">TODAY</span>` : `D-${d}`;
-    const repeatLabel = i.repeat && i.repeat !== 'none' ? (i.repeat === 'custom' ? `Every ${i.customMonths}mo` : i.repeat.replace('annually','Annually').replace('monthly','Monthly').replace('quarterly','Quarterly').replace('semi','6-Month').replace('2y','2-Year').replace('2.5y','2.5-Year').replace('5y','5-Year')) : '';
-    const isChecked = i.status === 'completed';
-    return `<div class="item-card ${isUrgent?'urgent':isWarning?'warning':''} ${isChecked?'completed':''}">
-      <button class="check-btn ${isChecked?'checked':''}" onclick="toggleComplete('${i.id}')" title="${isChecked?'Mark incomplete':'Mark complete'}">
-        ${isChecked?'<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>':''}
-      </button>
-      <span class="cat-badge ${getCatClass(i.category)}">${i.category}</span>
+    const done = isDone(i);
+    const isUrgent = d !== null && d <= 7 && !done;
+    const isWarning = d !== null && d > 7 && d <= 30 && !done;
+    const dLabel = done || d === null ? '' : d < 0 ? `<span style="color:var(--red);font-weight:600">OVERDUE ${-d}d</span>` : d === 0 ? `<span style="color:var(--red);font-weight:600">TODAY</span>` : `D-${d}`;
+    const rep = cycleMonths(i.repeat, i.customMonths);
+    const repeatLabel = !rep ? '' : i.repeat === 'custom' ? `Every ${i.customMonths}mo` : ({monthly:'Monthly',quarterly:'Quarterly',semi:'6-Month',annually:'Annually','2y':'2-Year','2.5y':'2.5-Year','5y':'5-Year'})[i.repeat];
+    const sent = (i.notifiedKeys || []).filter(k => /^D\d+$/.test(k)).map(k => parseInt(k.slice(1))).sort((a,b) => a-b);
+    return `${header}<div class="item-card ${isUrgent?'urgent':isWarning?'warning':''} ${done?'completed':''}">
+      ${checkBtn(i)}
+      <span class="cat-badge ${getCatClass(i.category)}">${esc(i.category)}</span>
       <div class="item-info">
-        <div class="item-title">${i.title}</div>
+        <div class="item-title">${esc(i.title)}</div>
         <div class="item-meta">
-          ${i.assignee ? `<span>👤 ${i.assignee}</span>` : ''}
+          ${i.assignee ? `<span>👤 ${esc(i.assignee)}</span>` : ''}
+          ${i.assigneeEmail ? `<span>📧 ${esc(i.assigneeEmail)}</span>` : (!done ? '<span style="color:var(--orange)">📧 no email</span>' : '')}
           ${repeatLabel ? `<span>🔄 ${repeatLabel}</span>` : ''}
-          ${i.notes ? `<span>📝 ${i.notes}</span>` : ''}
+          ${!done && sent.length ? `<span title="Reminder emails already sent">✅ sent D-${sent[0]}</span>` : ''}
+          ${i.notes ? `<span>📝 ${esc(i.notes)}</span>` : ''}
         </div>
       </div>
       <div style="text-align:right;min-width:110px">
         <div class="item-date">${i.targetDate}</div>
         <div style="font-size:12px;margin-top:2px">${dLabel}</div>
       </div>
-      <span class="status-badge status-${i.status}">${i.status.replace('_',' ')}</span>
+      <span class="status-badge status-${i.status}">${(i.status||'').replace('_',' ')}</span>
       <div class="item-actions">
         <button class="btn btn-ghost btn-sm" onclick="editItem('${i.id}')">Edit</button>
         <button class="btn btn-ghost btn-sm" onclick="deleteItem('${i.id}')" style="color:var(--red)">Del</button>
@@ -1020,17 +922,71 @@ function renderList() {
   }).join('');
 }
 
-// Date input auto-format
+// ── SETTINGS ──
+function renderSettings() {
+  document.getElementById('s-enabled').checked = !!settings.enabled;
+  document.getElementById('s-days').value = (settings.reminderDays || []).join(', ');
+  document.getElementById('s-overdue').value = settings.overdueEveryDays ?? 3;
+  document.getElementById('s-cc').value = settings.ccEmail || '';
+  document.getElementById('s-url').value = settings.dashboardUrl || '';
+  const st = document.getElementById('job-status');
+  if (!settings.lastRunAt) {
+    st.innerHTML = `<div class="status-box bad">The mail job has not run yet.<br>Install <b>Code.gs</b> in Google Apps Script and run <b>setupTrigger()</b> once.</div>`;
+  } else {
+    const last = new Date(settings.lastRunAt);
+    const hours = (Date.now() - last) / 36e5;
+    st.innerHTML = `<div class="status-box ${hours < 30 ? 'ok' : 'bad'}">
+      Last run: <b>${last.toLocaleString()}</b>${hours >= 30 ? ' — more than a day ago, check the Apps Script trigger' : ''}<br>
+      ${esc(settings.lastRunSummary || '')}</div>`;
+  }
+}
+window.saveSettings = async function() {
+  const days = document.getElementById('s-days').value.split(/[,\s]+/).map(s => parseInt(s)).filter(n => !isNaN(n) && n >= 0 && n <= 365);
+  const uniq = [...new Set(days)].sort((a,b) => b-a);
+  const cc = document.getElementById('s-cc').value.trim();
+  if (cc && !cc.split(',').every(e => validEmail(e.trim()))) { alert('Please check the CC email'); return; }
+  await settingsRef.set({
+    enabled: document.getElementById('s-enabled').checked,
+    reminderDays: uniq.length ? uniq : [30, 7, 1],
+    overdueEveryDays: Math.max(0, parseInt(document.getElementById('s-overdue').value) || 0),
+    ccEmail: cc,
+    dashboardUrl: document.getElementById('s-url').value.trim()
+  }, { merge: true });
+  toast('Settings saved');
+};
+function renderDirectory() {
+  document.getElementById('assignee-list').innerHTML = assignees.map(a => `<option value="${esc(a.name)}">`).join('');
+  document.getElementById('dir-body').innerHTML = assignees.length ? assignees.map(a => `
+    <tr><td>${esc(a.name)}</td><td>${esc(a.email)}</td>
+    <td style="text-align:right"><button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeAssignee('${a.id}')">Remove</button></td></tr>`).join('')
+    : '<tr><td colspan="3" style="color:var(--text-muted);text-align:center;padding:16px">No assignees yet</td></tr>';
+}
+window.addAssignee = async function() {
+  const name = document.getElementById('d-name').value.trim();
+  const email = document.getElementById('d-email').value.trim();
+  if (!name || !validEmail(email)) { alert('Enter a name and a valid email'); return; }
+  const dup = assignees.find(a => a.name.toLowerCase() === name.toLowerCase());
+  if (dup) await dirRef.doc(dup.id).update({ email }); else await dirRef.add({ name, email });
+  document.getElementById('d-name').value = ''; document.getElementById('d-email').value = '';
+};
+window.removeAssignee = async function(id) { if (confirm('Remove this person from the directory?')) await dirRef.doc(id).delete(); };
+window.syncEmailsToItems = async function() {
+  const batch = db.batch(); let n = 0;
+  items.filter(i => !isDone(i) && !i.assigneeEmail && i.assignee).forEach(i => {
+    const hit = assignees.find(a => a.name.toLowerCase() === i.assignee.trim().toLowerCase());
+    if (hit && n < 450) { batch.update(colRef.doc(i.id), { assigneeEmail: hit.email }); n++; }
+  });
+  if (!n) { toast('Nothing to update'); return; }
+  await batch.commit();
+  toast(`${n} item${n>1?'s':''} updated`);
+};
+
 document.getElementById('f-date').addEventListener('input', function() {
   let v = this.value.replace(/\D/g,'');
   if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
   if (v.length >= 6) v = v.slice(0,5)+'/'+v.slice(5);
   this.value = v.slice(0,10);
 });
-
-// Init nav month
-navMonth = new Date().getMonth();
-navYear = new Date().getFullYear();
 </script>
 </body>
 </html>
